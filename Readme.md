@@ -1,7 +1,7 @@
 # Личный проект «Шесть городов»
 
 * Студент: [Елена Есина](https://up.htmlacademy.ru/react-individual/3/user/261907).
-* Наставник: `Неизвестно`.
+* Наставник: [Александр Сударев](https://up.htmlacademy.ru/react-individual/3/user/1152185).
 
 ---
 
