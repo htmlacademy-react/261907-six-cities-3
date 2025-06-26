@@ -1,4 +1,4 @@
-import {OFFERS_COUNT, Settings} from './const';
+import {OFFERS_COUNT, Setting} from './const';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './component/app/app';
@@ -11,7 +11,7 @@ root.render(
   <React.StrictMode>
     <App
       offersCount = {OFFERS_COUNT}
-      offersPerPage = {Settings.OffersPerPage}
+      offersPerPage = {Setting.OffersPerPage}
     />
   </React.StrictMode>
 );
