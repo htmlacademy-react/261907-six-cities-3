@@ -1,6 +1,6 @@
 import Logo from '../../component/logo/logo';
 
-function Login() {
+function LoginScreen() {
   return (
     <div className='page  page--gray  page--login'>
       <header className='header'>
@@ -39,4 +39,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default LoginScreen;

@@ -2,7 +2,7 @@ import {Link} from 'react-router-dom';
 import {AppRoute} from '../../const';
 import Logo from '../../component/logo/logo';
 
-function NotFound(): JSX.Element {
+function NotFoundScreen(): JSX.Element {
   return (
     <div className='page  page--gray  page--login'>
       <header className='header'>
@@ -35,4 +35,4 @@ function NotFound(): JSX.Element {
   );
 }
 
-export default NotFound;
+export default NotFoundScreen;
