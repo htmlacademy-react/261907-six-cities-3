@@ -1,4 +1,5 @@
-import {OFFERS_COUNT, Setting} from './const';
+import {offers} from './mocks/offers';
+import {reviews} from './mocks/reviews';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './component/app/app';
@@ -10,8 +11,8 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <App
-      offersCount = {OFFERS_COUNT}
-      offersPerPage = {Setting.OffersPerPage}
+      offers={offers}
+      reviews={reviews}
     />
   </React.StrictMode>
 );

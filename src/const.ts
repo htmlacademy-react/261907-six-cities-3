@@ -1,9 +1,3 @@
-const OFFERS_COUNT = 420;
-
-const Setting = {
-  OffersPerPage: 5
-};
-
 enum AppRoute {
   Main = '/',
   Login = '/login',
@@ -17,9 +11,16 @@ enum AuthorizationStatus {
   Unknown = 'UNKNOWN'
 }
 
+const Rating = {
+  Perfect: '5',
+  Good: '4',
+  NotBad: '3',
+  Badly: '2',
+  Terribly: '1'
+} as const;
+
 export {
-  OFFERS_COUNT,
-  Setting,
   AppRoute,
-  AuthorizationStatus
+  AuthorizationStatus,
+  Rating
 };
