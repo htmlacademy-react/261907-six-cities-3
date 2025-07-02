@@ -7,13 +7,11 @@ type BookmarkButtonProps = {
 }
 
 function BookmarkButton({className, isFavorite}: BookmarkButtonProps): JSX.Element {
-  const activeClass = `${className}__bookmark-button--active`;
-
   return (
     <button
       className={cn(
         `${className}__bookmark-button  button`,
-        {[activeClass]: isFavorite}
+        {[`${className}__bookmark-button--active`]: isFavorite}
       )}
       type='button'
     >

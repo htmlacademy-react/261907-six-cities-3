@@ -1,4 +1,5 @@
 import {useState} from 'react';
+import {CardClass, MapClass} from '../../const';
 import {Location, Offer} from '../../types/offer';
 import Logo from '../../component/logo/logo';
 import OffersList from '../../component/offers-list/offers-list';
@@ -101,12 +102,13 @@ function MainScreen({offers}: MainScreenProps): JSX.Element {
                 </ul>
               </form>
               <OffersList
+                className={CardClass.Cities}
                 offers={offers}
                 onOfferEnter={handleOfferEnter}
               />
             </section>
             <div className='cities__right-section'>
-              <Map city={city} offers={offers} enteredOffer={enteredOffer} />
+              <Map className={MapClass.Cities} city={city} offers={offers} enteredOffer={enteredOffer} />
             </div>
           </div>
         </div>

@@ -1,22 +1,34 @@
+import cn from 'classnames';
 import {CardClass} from '../../const';
 import {Offer} from '../../types/offer';
 import OfferCard from '../../component/offer-card/offer-card';
 
 type OffersListProps = {
+  className: CardClass;
   offers: Offer[];
-  onOfferEnter: (offerId: string) => void;
+  onOfferEnter?: (offerId: string) => void;
 }
 
-function OffersList({offers, onOfferEnter}: OffersListProps): JSX.Element {
+function OffersList({className, offers, onOfferEnter}: OffersListProps): JSX.Element {
   return (
-    <div className='cities__places-list  places__list  tabs__content'>
+    <div
+      className={cn(
+        'places__list',
+        {
+          [`${className}__places-list  tabs__content`]: className === CardClass.Cities,
+          [`${className}__list`]: className === CardClass.NearPlaces
+        }
+      )}
+    >
       {offers.map((offer: Offer) => (
         <OfferCard
           key={offer.id}
           offer={offer}
-          className={CardClass.Cities}
+          className={className}
           onOfferEnter={() => {
-            onOfferEnter(offer.id);
+            if (onOfferEnter) {
+              onOfferEnter(offer.id);
+            }
           }}
         />
       ))}

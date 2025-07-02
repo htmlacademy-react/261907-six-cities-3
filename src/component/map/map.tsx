@@ -2,14 +2,15 @@
 import {useEffect, useRef} from 'react';
 import {Icon, Marker} from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import {URL_MARKER, URL_MARKER_ACTIVE} from '../../const';
+import {URL_MARKER, URL_MARKER_ACTIVE, MapClass} from '../../const';
 import {Location, Offer} from '../../types/offer';
 import useMap from '../../hooks/use-map';
 
 type MapProps = {
+  className: MapClass;
   city: Location;
   offers: Offer[];
-  enteredOffer: string;
+  enteredOffer?: string;
 };
 
 const customIcon = new Icon({
@@ -24,7 +25,7 @@ const customIconActive = new Icon({
   iconAnchor: [14, 20]
 });
 
-function Map({city, offers, enteredOffer}: MapProps): JSX.Element {
+function Map({className, city, offers, enteredOffer = ''}: MapProps): JSX.Element {
   const mapRef = useRef<HTMLElement | null>(null);
   const map = useMap(mapRef, city);
 
@@ -49,7 +50,7 @@ function Map({city, offers, enteredOffer}: MapProps): JSX.Element {
 
   return (
     <section
-      className='cities__map  map'
+      className={`${className}__map  map`}
       ref={mapRef}
     />
   );

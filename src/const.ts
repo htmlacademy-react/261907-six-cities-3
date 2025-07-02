@@ -26,6 +26,11 @@ enum CardClass {
   NearPlaces = 'near-places'
 }
 
+enum MapClass {
+  Cities = 'cities',
+  Offer = 'offer'
+}
+
 const Rating = {
   Perfect: '5',
   Good: '4',
@@ -41,5 +46,6 @@ export {
   AuthorizationStatus,
   BookMarkButtonClass,
   CardClass,
+  MapClass,
   Rating
 };
