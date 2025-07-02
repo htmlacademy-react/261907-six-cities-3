@@ -1,12 +1,22 @@
-import {Offer} from '../../types/offer';
+import {useState} from 'react';
+import {Location, Offer} from '../../types/offer';
 import Logo from '../../component/logo/logo';
 import OffersList from '../../component/offers-list/offers-list';
+import Map from '../../component/map/map';
 
 type MainScreenProps = {
   offers: Offer[];
 }
 
 function MainScreen({offers}: MainScreenProps): JSX.Element {
+  const [enteredOffer, setEnteredOffer] = useState('');
+  const city: Location = offers[0].city.location;
+
+
+  const handleOfferEnter = (offerId: string) => {
+    setEnteredOffer(offerId);
+  };
+
   return (
     <div className='page  page--gray  page--main'>
       <header className='header'>
@@ -90,10 +100,13 @@ function MainScreen({offers}: MainScreenProps): JSX.Element {
                   <li className='places__option' tabIndex={0}>Top rated first</li>
                 </ul>
               </form>
-              <OffersList offers={offers} />
+              <OffersList
+                offers={offers}
+                onOfferEnter={handleOfferEnter}
+              />
             </section>
             <div className='cities__right-section'>
-              <section className='cities__map  map' />
+              <Map city={city} offers={offers} enteredOffer={enteredOffer} />
             </div>
           </div>
         </div>

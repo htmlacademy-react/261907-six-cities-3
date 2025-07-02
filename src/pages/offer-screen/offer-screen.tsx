@@ -1,9 +1,12 @@
 import {useParams} from 'react-router-dom';
+import cn from 'classnames';
+import {BookMarkButtonClass, CardClass} from '../../const';
 import {capitalize} from '../../utils';
 import {Offer} from '../../types/offer';
 import {Review} from '../../types/review';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
 import Logo from '../../component/logo/logo';
+import BookmarkButton from '../../component/bookmark-button/bookmark-button';
 import ReviewCard from '../../component/review-card/review-card';
 import CommentForm from '../../component/comment-form/comment-form';
 import OfferCard from '../../component/offer-card/offer-card';
@@ -61,19 +64,10 @@ function OfferScreen({offers, reviews}: OfferScreenProps): JSX.Element {
           </div>
           <div className='offer__container  container'>
             <div className='offer__wrapper'>
-              {requiredOffer.isPremium ?
-                <div className='offer__mark'>
-                  <span>Premium</span>
-                </div> :
-                null}
+              {requiredOffer.isPremium && <div className='offer__mark'><span>Premium</span></div>}
               <div className='offer__name-wrapper'>
                 <h1 className='offer__name'>{requiredOffer.title}</h1>
-                <button className={`offer__bookmark-button  button${requiredOffer.isFavorite ? '  offer__bookmark-button--active' : ''}`} type='button'>
-                  <svg className='offer__bookmark-icon' width='31' height='33'>
-                    <use xlinkHref='#icon-bookmark' />
-                  </svg>
-                  <span className='visually-hidden'>{requiredOffer.isFavorite ? 'In' : 'To'} bookmarks</span>
-                </button>
+                <BookmarkButton className={BookMarkButtonClass.Offer} isFavorite={requiredOffer.isFavorite} />
               </div>
               <div className='offer__rating  rating'>
                 <div className='offer__stars  rating__stars'>
@@ -106,13 +100,16 @@ function OfferScreen({offers, reviews}: OfferScreenProps): JSX.Element {
               <div className='offer__host'>
                 <h2 className='offer__host-title'>Meet the host</h2>
                 <div className='offer__host-user  user'>
-                  <div className={`offer__avatar-wrapper  user__avatar-wrapper${requiredOffer.host.isPro ? '  offer__avatar-wrapper--pro' : ''}`}>
+                  <div
+                    className={cn(
+                      'offer__avatar-wrapper  user__avatar-wrapper',
+                      {'offer__avatar-wrapper--pro': requiredOffer.host.isPro}
+                    )}
+                  >
                     <img className='offer__avatar user__avatar' src={requiredOffer.host.avatarUrl} width='74' height='74' alt='Host avatar' />
                   </div>
                   <span className='offer__user-name'>{requiredOffer.host.name}</span>
-                  {requiredOffer.host.isPro ?
-                    <span className='offer__user-status'>Pro</span> :
-                    null}
+                  {requiredOffer.host.isPro && <span className='offer__user-status'>Pro</span>}
                 </div>
                 <div className='offer__description'>
                   <p className='offer__text'>{requiredOffer.description}</p>
@@ -136,7 +133,7 @@ function OfferScreen({offers, reviews}: OfferScreenProps): JSX.Element {
           <section className='near-places  places'>
             <h2 className='near-places__title'>Other places in the neighbourhood</h2>
             <div className='near-places__list  places__list'>
-              {offers.map((offer) => offer !== requiredOffer ? <OfferCard key={offer.id} offer={offer} isDefaultView /> : null)}
+              {offers.map((offer) => offer !== requiredOffer && <OfferCard key={offer.id} offer={offer} className={CardClass.NearPlaces} />)}
             </div>
           </section>
         </div>
