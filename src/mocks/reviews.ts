@@ -11,6 +11,17 @@ const reviews: Review[] = [
     },
     comment:'A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam.',
     rating: 4
+  },
+  {
+    id: '1',
+    date: '2025-04-20T15:05:01.569Z',
+    user: {
+      name: 'Number One',
+      avatarUrl: 'https://cdn.jsdelivr.net/gh/alohe/avatars/png/vibrent_15.png',
+      isPro: true
+    },
+    comment:'Horrible!',
+    rating: 1
   }
 ];
 

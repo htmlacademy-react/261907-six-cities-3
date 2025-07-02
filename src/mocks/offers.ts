@@ -68,7 +68,7 @@ const offers: Offer[] = [
     ],
     host: {
       name: 'Midoriya Izuku',
-      avatarUrl: 'https://cdn.jsdelivr.net/gh/alohe/avatars/png/vibrent_6.pngg',
+      avatarUrl: 'https://cdn.jsdelivr.net/gh/alohe/avatars/png/vibrent_6.png',
       isPro: false
     },
     images: [

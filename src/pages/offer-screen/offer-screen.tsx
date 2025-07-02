@@ -1,15 +1,16 @@
 import {useParams} from 'react-router-dom';
 import cn from 'classnames';
-import {BookMarkButtonClass, CardClass} from '../../const';
+import {BookMarkButtonClass, CardClass, MapClass} from '../../const';
 import {capitalize} from '../../utils';
 import {Offer} from '../../types/offer';
 import {Review} from '../../types/review';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
 import Logo from '../../component/logo/logo';
 import BookmarkButton from '../../component/bookmark-button/bookmark-button';
-import ReviewCard from '../../component/review-card/review-card';
+import ReviewsList from '../../component/reviews-list/reviews-list';
 import CommentForm from '../../component/comment-form/comment-form';
-import OfferCard from '../../component/offer-card/offer-card';
+import Map from '../../component/map/map';
+import OffersList from '../../component/offers-list/offers-list';
 
 type OfferScreenProps ={
   offers: Offer[];
@@ -24,6 +25,8 @@ function OfferScreen({offers, reviews}: OfferScreenProps): JSX.Element {
   if (!requiredOffer) {
     return <NotFoundScreen />;
   }
+
+  const nearPlaces: Offer[] = offers.filter((offer) => offer !== requiredOffer);
 
   return (
     <div className='page'>
@@ -120,21 +123,17 @@ function OfferScreen({offers, reviews}: OfferScreenProps): JSX.Element {
                   Reviews &middot;
                   <span className='reviews__amount'>{reviews.length}</span>
                 </h2>
-                <ul className='reviews__list'>
-                  {reviews.map((review) => <ReviewCard key={review.id} review={review}/>)}
-                </ul>
+                <ReviewsList reviews={reviews} />
                 <CommentForm />
               </section>
             </div>
           </div>
-          <section className='offer__map  map' />
+          <Map className={MapClass.Offer} city={requiredOffer.city.location} offers={nearPlaces} />
         </section>
         <div className='container'>
           <section className='near-places  places'>
             <h2 className='near-places__title'>Other places in the neighbourhood</h2>
-            <div className='near-places__list  places__list'>
-              {offers.map((offer) => offer !== requiredOffer && <OfferCard key={offer.id} offer={offer} className={CardClass.NearPlaces} />)}
-            </div>
+            <OffersList className={CardClass.NearPlaces} offers={nearPlaces} />
           </section>
         </div>
       </main>
