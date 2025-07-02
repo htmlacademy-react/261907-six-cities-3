@@ -1,13 +1,11 @@
 import {Offer} from '../../types/offer';
 import {sortOffersByLocation} from '../../utils';
+import {useAppSelector} from '../../hooks';
 import Logo from '../../component/logo/logo';
 import FavoriteLocation from '../../component/favorite-location/favorite-location';
 
-type FavoritesScreenProps = {
-  offers: Offer[];
-};
-
-function FavoritesScreen({offers}: FavoritesScreenProps) {
+function FavoritesScreen() {
+  const offers: Offer[] = useAppSelector((state) => state.offers);
   const sortedOffers = sortOffersByLocation(offers);
 
   return (

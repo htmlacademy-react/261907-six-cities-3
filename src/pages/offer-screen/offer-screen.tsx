@@ -4,6 +4,7 @@ import {BookMarkButtonClass, CardClass, MapClass} from '../../const';
 import {capitalize} from '../../utils';
 import {Offer} from '../../types/offer';
 import {Review} from '../../types/review';
+import {useAppSelector} from '../../hooks';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
 import Logo from '../../component/logo/logo';
 import BookmarkButton from '../../component/bookmark-button/bookmark-button';
@@ -13,12 +14,12 @@ import Map from '../../component/map/map';
 import OffersList from '../../component/offers-list/offers-list';
 
 type OfferScreenProps ={
-  offers: Offer[];
   reviews: Review[];
 };
 
-function OfferScreen({offers, reviews}: OfferScreenProps): JSX.Element {
+function OfferScreen({reviews}: OfferScreenProps): JSX.Element {
   const params = useParams();
+  const offers: Offer[] = useAppSelector((state) => state.offers);
 
   const requiredOffer: Offer | undefined = offers.find(({id}: Offer) => id === params.id);
 
@@ -128,7 +129,7 @@ function OfferScreen({offers, reviews}: OfferScreenProps): JSX.Element {
               </section>
             </div>
           </div>
-          <Map className={MapClass.Offer} city={requiredOffer.city.location} offers={nearPlaces} />
+          <Map className={MapClass.Offer} offers={nearPlaces} />
         </section>
         <div className='container'>
           <section className='near-places  places'>

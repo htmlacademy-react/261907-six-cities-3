@@ -8,7 +8,6 @@ import useMap from '../../hooks/use-map';
 
 type MapProps = {
   className: MapClass;
-  city: Location;
   offers: Offer[];
   enteredOffer?: string;
 };
@@ -25,8 +24,9 @@ const customIconActive = new Icon({
   iconAnchor: [14, 20]
 });
 
-function Map({className, city, offers, enteredOffer = ''}: MapProps): JSX.Element {
+function Map({className, offers, enteredOffer = ''}: MapProps): JSX.Element {
   const mapRef = useRef<HTMLElement | null>(null);
+  const city: Location = offers[0].city.location;
   const map = useMap(mapRef, city);
 
   useEffect(() => {
