@@ -1,3 +1,5 @@
+const CITIES = ['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseldorf'];
+
 const URL_MARKER = '/img/pin.svg';
 
 const URL_MARKER_ACTIVE = '/img/pin-active.svg';
@@ -40,6 +42,7 @@ const Rating = {
 } as const;
 
 export {
+  CITIES,
   URL_MARKER,
   URL_MARKER_ACTIVE,
   AppRoute,

@@ -1,18 +1,25 @@
 import {useState} from 'react';
-import {CardClass, MapClass} from '../../const';
-import {Location, Offer} from '../../types/offer';
+import cn from 'classnames';
+import {MapClass} from '../../const';
+import {Offer} from '../../types/offer';
+import {useAppDispatch, useAppSelector} from '../../hooks';
+import {changeCityAction} from '../../store/action';
 import Logo from '../../component/logo/logo';
-import OffersList from '../../component/offers-list/offers-list';
+import LocationsList from '../../component/locations-list/location-list';
+import CityEmpty from '../../component/city-empty/city-empty';
 import Map from '../../component/map/map';
+import CityOffers from '../../component/city-offers/city-offers';
 
-type MainScreenProps = {
-  offers: Offer[];
-}
-
-function MainScreen({offers}: MainScreenProps): JSX.Element {
+function MainScreen(): JSX.Element {
   const [enteredOffer, setEnteredOffer] = useState('');
-  const city: Location = offers[0].city.location;
+  const activeCity = useAppSelector((state) => state.city);
+  const offers = useAppSelector((state) => state.offers);
+  const dispatch = useAppDispatch();
+  const activeOffers = offers.filter((offer: Offer) => offer.city.name === activeCity);
 
+  const handleChangeCity = (city: string) => {
+    dispatch(changeCityAction({city}));
+  };
 
   const handleOfferEnter = (offerId: string) => {
     setEnteredOffer(offerId);
@@ -43,72 +50,30 @@ function MainScreen({offers}: MainScreenProps): JSX.Element {
           </div>
         </div>
       </header>
-      <main className='page__main  page__main--index'>
+      <main
+        className={cn(
+          'page__main  page__main--index',
+          {'page__main--index-empty': !activeOffers.length}
+        )}
+      >
         <h1 className='visually-hidden'>Cities</h1>
         <div className='tabs'>
           <section className='locations  container'>
-            <ul className='locations__list  tabs__list'>
-              <li className='locations__item'>
-                <a className='locations__item-link  tabs__item' href='#'>
-                  <span>Paris</span>
-                </a>
-              </li>
-              <li className='locations__item'>
-                <a className='locations__item-link  tabs__item' href='#'>
-                  <span>Cologne</span>
-                </a>
-              </li>
-              <li className='locations__item'>
-                <a className='locations__item-link  tabs__item' href='#'>
-                  <span>Brussels</span>
-                </a>
-              </li>
-              <li className='locations__item'>
-                <a className='locations__item-link  tabs__item  tabs__item--active'>
-                  <span>Amsterdam</span>
-                </a>
-              </li>
-              <li className='locations__item'>
-                <a className='locations__item-link  tabs__item' href='#'>
-                  <span>Hamburg</span>
-                </a>
-              </li>
-              <li className='locations__item'>
-                <a className='locations__item-link  tabs__item' href='#'>
-                  <span>Dusseldorf</span>
-                </a>
-              </li>
-            </ul>
+            <LocationsList activeCity={activeCity} onCityPick={handleChangeCity}/>
           </section>
         </div>
         <div className='cities'>
-          <div className='cities__places-container  container'>
-            <section className='cities__places  places'>
-              <h2 className='visually-hidden'>Places</h2>
-              <b className='places__found'>{offers.length} places to stay in Amsterdam</b>
-              <form className='places__sorting' action='#' method='get'>
-                <span className='places__sorting-caption'>Sort by</span>
-                <span className='places__sorting-type' tabIndex={0}>
-                  Popular
-                  <svg className='places__sorting-arrow' width='7' height='4'>
-                    <use xlinkHref='#icon-arrow-select' />
-                  </svg>
-                </span>
-                <ul className='places__options  places__options--custom  places__options--opened'>
-                  <li className='places__option  places__option--active' tabIndex={0}>Popular</li>
-                  <li className='places__option' tabIndex={0}>Price: low to high</li>
-                  <li className='places__option' tabIndex={0}>Price: high to low</li>
-                  <li className='places__option' tabIndex={0}>Top rated first</li>
-                </ul>
-              </form>
-              <OffersList
-                className={CardClass.Cities}
-                offers={offers}
-                onOfferEnter={handleOfferEnter}
-              />
-            </section>
+          <div
+            className={cn(
+              'cities__places-container  container',
+              {'cities__places-container--empty': !activeOffers.length}
+            )}
+          >
+            {activeOffers.length
+              ? <CityOffers city={activeCity} offers={activeOffers} handleOfferEnter={handleOfferEnter} />
+              : <CityEmpty />}
             <div className='cities__right-section'>
-              <Map className={MapClass.Cities} city={city} offers={offers} enteredOffer={enteredOffer} />
+              {Boolean(activeOffers.length) && <Map className={MapClass.Cities} offers={activeOffers} enteredOffer={enteredOffer} />}
             </div>
           </div>
         </div>
