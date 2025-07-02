@@ -1,3 +1,7 @@
+const URL_MARKER = '/img/pin.svg';
+
+const URL_MARKER_ACTIVE = '/img/pin-active.svg';
+
 enum AppRoute {
   Main = '/',
   Login = '/login',
@@ -11,6 +15,17 @@ enum AuthorizationStatus {
   Unknown = 'UNKNOWN'
 }
 
+enum BookMarkButtonClass {
+  PlaceCard = 'place-card',
+  Offer = 'offer'
+}
+
+enum CardClass {
+  Cities = 'cities',
+  Favorites = 'favorites',
+  NearPlaces = 'near-places'
+}
+
 const Rating = {
   Perfect: '5',
   Good: '4',
@@ -20,7 +35,11 @@ const Rating = {
 } as const;
 
 export {
+  URL_MARKER,
+  URL_MARKER_ACTIVE,
   AppRoute,
   AuthorizationStatus,
+  BookMarkButtonClass,
+  CardClass,
   Rating
 };

@@ -1,3 +1,4 @@
+import {CardClass} from '../../const';
 import {LocationWithOffers} from '../../types/offer';
 import OfferCard from '../offer-card/offer-card';
 
@@ -16,7 +17,7 @@ function FavoriteLocation({location}: FavoriteLocationProps) {
         </div>
       </div>
       <div className='favorites__places'>
-        {location.offers.map((offer) => <OfferCard key={offer.id} offer={offer} isDefaultView={false} />)}
+        {location.offers.map((offer) => <OfferCard key={offer.id} offer={offer} className={CardClass.Favorites} />)}
       </div>
     </li>
   );
