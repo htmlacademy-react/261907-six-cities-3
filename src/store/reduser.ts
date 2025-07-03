@@ -1,14 +1,11 @@
 import {createReducer} from '@reduxjs/toolkit';
-import {CITIES, Sorting} from '../const';
-import {updateOffersToRender} from '../utils';
+import {CITIES} from '../const';
 import {offers} from '../mocks/offers';
-import {changeCityAction, changeSortingAction, renderOffersAction} from './action';
+import {changeCityAction} from './action';
 
 const initialState = {
   city: CITIES[0],
-  sorting: Sorting.Popular,
   offers,
-  offersToRender: updateOffersToRender(offers, CITIES[0], Sorting.Popular)
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -17,19 +14,6 @@ const reducer = createReducer(initialState, (builder) => {
       const {city} = action.payload;
 
       state.city = city;
-      state.sorting = Sorting.Popular;
-      state.offersToRender = updateOffersToRender(state.offers, state.city, state.sorting);
-    })
-    .addCase(renderOffersAction, (state, action) => {
-      const {offersToRender} = action.payload;
-
-      state.offersToRender = offersToRender;
-    })
-    .addCase(changeSortingAction, (state, action) => {
-      const {sorting} = action.payload;
-
-      state.sorting = sorting;
-      state.offersToRender = updateOffersToRender(state.offers, state.city, state.sorting);
     });
 });
 

@@ -1,18 +1,26 @@
 import {useState} from 'react';
 import cn from 'classnames';
-import {CardClass, MapClass} from '../../const';
+import {CardClass, MapClass, Sorting} from '../../const';
+import {updateOffersToRender} from '../../utils';
 import {useAppSelector} from '../../hooks';
 import Logo from '../../component/logo/logo';
 import LocationsList from '../../component/locations-list/location-list';
 import CityEmpty from '../../component/city-empty/city-empty';
 import Map from '../../component/map/map';
 import CityOffers from '../../component/city-offers/city-offers';
+import Sort from '../../component/sort/sort';
 import OffersList from '../../component/offers-list/offers-list';
 
 function MainScreen(): JSX.Element {
   const [enteredOffer, setEnteredOffer] = useState('');
+  const [sorting, setSorting] = useState(Sorting.Popular);
+  const offers = useAppSelector((state) => state.offers);
   const activeCity = useAppSelector((state) => state.city);
-  const offersToRender = useAppSelector((state) => state.offersToRender);
+  const offersToRender = updateOffersToRender(offers, activeCity, sorting);
+
+  const handleSortingChange = (requestedSorting: Sorting) => {
+    setSorting(requestedSorting);
+  };
 
   const handleOfferEnter = (offerId: string) => {
     setEnteredOffer(offerId);
@@ -69,6 +77,7 @@ function MainScreen(): JSX.Element {
             {offersToRender.length
               ? (
                 <CityOffers city={activeCity} offers={offersToRender}>
+                  <Sort sorting={sorting} onSortingChange={handleSortingChange} />
                   <OffersList
                     className={CardClass.Cities}
                     offers={offersToRender}
