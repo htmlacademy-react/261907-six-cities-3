@@ -33,13 +33,20 @@ enum MapClass {
   Offer = 'offer'
 }
 
-const Rating = {
-  Perfect: '5',
-  Good: '4',
-  NotBad: '3',
-  Badly: '2',
-  Terribly: '1'
-} as const;
+enum Rating {
+  Terribly = 'terribly',
+  Badly = 'badly',
+  NotBad = 'not bad',
+  Good = 'good',
+  Perfect = 'perfect'
+}
+
+enum Sorting {
+  Popular = 'Popular',
+  PriceAsc = 'Price: low to high',
+  PriceDesc = 'Price: high to low',
+  TopRated = 'Top rated first'
+}
 
 export {
   CITIES,
@@ -50,5 +57,6 @@ export {
   BookMarkButtonClass,
   CardClass,
   MapClass,
-  Rating
+  Rating,
+  Sorting
 };

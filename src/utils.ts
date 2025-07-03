@@ -1,3 +1,4 @@
+import {Sorting} from './const';
 import {Offer, LocationWithOffers} from './types/offer';
 
 function capitalize(value: string): string {
@@ -23,7 +24,35 @@ function sortOffersByLocation(offers: Offer[]): LocationWithOffers[] {
   return result;
 }
 
+function sortPriceAsc(offerA: Offer, offerB: Offer): number {
+  return offerA.price - offerB.price;
+}
+
+function sortPriceDesc(offerA: Offer, offerB: Offer): number {
+  return offerB.price - offerA.price;
+}
+
+function sortRating(offerA: Offer, offerB: Offer): number {
+  return offerB.rating - offerA.rating;
+}
+
+function updateOffersToRender(offers: Offer[], city: string, sorting: Sorting): Offer[] {
+  const requiredOffers = offers.filter((offer: Offer) => offer.city.name === city);
+
+  switch (sorting) {
+    case Sorting.PriceAsc:
+      return requiredOffers.sort(sortPriceAsc);
+    case Sorting.PriceDesc:
+      return requiredOffers.sort(sortPriceDesc);
+    case Sorting.TopRated:
+      return requiredOffers.sort(sortRating);
+  }
+
+  return requiredOffers;
+}
+
 export {
   capitalize,
-  sortOffersByLocation
+  sortOffersByLocation,
+  updateOffersToRender
 };

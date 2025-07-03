@@ -9,17 +9,15 @@ type OfferCardProps = {
   offer: Offer;
   className: CardClass;
   onOfferEnter?: () => void;
+  onOfferLeave?: () => void;
 };
 
-function OfferCard({offer, className, onOfferEnter}: OfferCardProps): JSX.Element {
+function OfferCard({offer, className, onOfferEnter, onOfferLeave}: OfferCardProps): JSX.Element {
   return (
     <article
       className={`${className}__card  place-card`}
-      onMouseEnter={() => {
-        if (onOfferEnter) {
-          onOfferEnter();
-        }
-      }}
+      onMouseEnter={onOfferEnter}
+      onMouseLeave={onOfferLeave}
     >
       {offer.isPremium && <div className='place-card__mark'><span>Premium</span></div>}
       <div className={`${className}__image-wrapper  place-card__image-wrapper`}>

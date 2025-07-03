@@ -1,28 +1,25 @@
 import {useState} from 'react';
 import cn from 'classnames';
-import {MapClass} from '../../const';
-import {Offer} from '../../types/offer';
-import {useAppDispatch, useAppSelector} from '../../hooks';
-import {changeCityAction} from '../../store/action';
+import {CardClass, MapClass} from '../../const';
+import {useAppSelector} from '../../hooks';
 import Logo from '../../component/logo/logo';
 import LocationsList from '../../component/locations-list/location-list';
 import CityEmpty from '../../component/city-empty/city-empty';
 import Map from '../../component/map/map';
 import CityOffers from '../../component/city-offers/city-offers';
+import OffersList from '../../component/offers-list/offers-list';
 
 function MainScreen(): JSX.Element {
   const [enteredOffer, setEnteredOffer] = useState('');
   const activeCity = useAppSelector((state) => state.city);
-  const offers = useAppSelector((state) => state.offers);
-  const dispatch = useAppDispatch();
-  const activeOffers = offers.filter((offer: Offer) => offer.city.name === activeCity);
-
-  const handleChangeCity = (city: string) => {
-    dispatch(changeCityAction({city}));
-  };
+  const offersToRender = useAppSelector((state) => state.offersToRender);
 
   const handleOfferEnter = (offerId: string) => {
     setEnteredOffer(offerId);
+  };
+
+  const handleOfferLeave = () => {
+    setEnteredOffer('');
   };
 
   return (
@@ -53,27 +50,36 @@ function MainScreen(): JSX.Element {
       <main
         className={cn(
           'page__main  page__main--index',
-          {'page__main--index-empty': !activeOffers.length}
+          {'page__main--index-empty': !offersToRender.length}
         )}
       >
         <h1 className='visually-hidden'>Cities</h1>
         <div className='tabs'>
           <section className='locations  container'>
-            <LocationsList activeCity={activeCity} onCityPick={handleChangeCity}/>
+            <LocationsList />
           </section>
         </div>
         <div className='cities'>
           <div
             className={cn(
               'cities__places-container  container',
-              {'cities__places-container--empty': !activeOffers.length}
+              {'cities__places-container--empty': !offersToRender.length}
             )}
           >
-            {activeOffers.length
-              ? <CityOffers city={activeCity} offers={activeOffers} handleOfferEnter={handleOfferEnter} />
+            {offersToRender.length
+              ? (
+                <CityOffers city={activeCity} offers={offersToRender}>
+                  <OffersList
+                    className={CardClass.Cities}
+                    offers={offersToRender}
+                    onOfferEnter={handleOfferEnter}
+                    onOfferLeave={handleOfferLeave}
+                  />
+                </CityOffers>
+              )
               : <CityEmpty />}
             <div className='cities__right-section'>
-              {Boolean(activeOffers.length) && <Map className={MapClass.Cities} offers={activeOffers} enteredOffer={enteredOffer} />}
+              {Boolean(offersToRender.length) && <Map className={MapClass.Cities} offers={offersToRender} enteredOffer={enteredOffer} />}
             </div>
           </div>
         </div>
