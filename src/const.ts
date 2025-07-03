@@ -1,14 +1,28 @@
+const BACKEND_URL = 'https://15.design.htmlacademy.pro/six-cities';
+
 const CITIES = ['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseldorf'];
+
+const ERROR_TIMEOUT = 2000;
+
+const REQUEST_TIMEOUT = 5000;
 
 const URL_MARKER = '/img/pin.svg';
 
 const URL_MARKER_ACTIVE = '/img/pin-active.svg';
 
+enum ApiRoute {
+  Offers = '/offers',
+  Favorite = '/favorite',
+  Comments = '/comments',
+  Login = '/login',
+  Logout = '/logout'
+}
+
 enum AppRoute {
   Main = '/',
   Login = '/login',
   Favorites = '/favorites',
-  Offer = '/offer/:id'
+  Offer = '/offer'
 }
 
 enum AuthorizationStatus {
@@ -49,9 +63,13 @@ enum Sorting {
 }
 
 export {
+  BACKEND_URL,
   CITIES,
+  ERROR_TIMEOUT,
+  REQUEST_TIMEOUT,
   URL_MARKER,
   URL_MARKER_ACTIVE,
+  ApiRoute,
   AppRoute,
   AuthorizationStatus,
   BookMarkButtonClass,

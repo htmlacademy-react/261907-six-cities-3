@@ -3,7 +3,7 @@ import {useEffect, useRef} from 'react';
 import {Icon, Marker} from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import {URL_MARKER, URL_MARKER_ACTIVE, MapClass} from '../../const';
-import {Location, Offer} from '../../types/offer';
+import {City, Offer} from '../../types/offer';
 import useMap from '../../hooks/use-map';
 
 type MapProps = {
@@ -26,8 +26,9 @@ const customIconActive = new Icon({
 
 function Map({className, offers, enteredOffer = ''}: MapProps): JSX.Element {
   const mapRef = useRef<HTMLElement | null>(null);
-  const city: Location = offers[0].city.location;
-  const map = useMap(mapRef, city);
+  const city : City = offers[0].city;
+  const renderedCity = useRef<string>(city.name);
+  const map = useMap(mapRef, city.location);
 
   useEffect(() => {
     if (map) {
@@ -45,8 +46,15 @@ function Map({className, offers, enteredOffer = ''}: MapProps): JSX.Element {
           )
           .addTo(map);
       });
+
+      if (renderedCity.current !== city.name) {
+        map.setView(
+          [city.location.latitude, city.location.longitude],
+          city.location.zoom
+        );
+      }
     }
-  }, [map, offers, enteredOffer]);
+  }, [map, offers, enteredOffer, city]);
 
   return (
     <section

@@ -1,0 +1,44 @@
+@keyframes animloader {
+  0% {
+    top: 0;
+
+    transform: translateY(-100%);
+  }
+
+  100% {
+    top: 100%;
+
+    transform: translateY(0%);
+  }
+}
+
+.loader {
+  position: relative;
+
+  display: block;
+  overflow: hidden;
+
+  width: 6px;
+  height: 100vh;
+  margin: 0 auto;
+
+  background: #fff;
+
+  transform: skew(-6.5deg);
+}
+
+.loader::after {
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  box-sizing: border-box;
+  width: 6px;
+  height: 192px;
+
+  content: '';
+
+  background: #4481c3;
+
+  animation: animloader 5s linear infinite;
+}

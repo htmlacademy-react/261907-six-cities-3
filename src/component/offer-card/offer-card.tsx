@@ -21,7 +21,7 @@ function OfferCard({offer, className, onOfferEnter, onOfferLeave}: OfferCardProp
     >
       {offer.isPremium && <div className='place-card__mark'><span>Premium</span></div>}
       <div className={`${className}__image-wrapper  place-card__image-wrapper`}>
-        <Link to={AppRoute.Offer.replace(':id', offer.id)}>
+        <Link to={`${AppRoute.Offer}/${offer.id}`}>
           <img
             className='place-card__image'
             src={offer.previewImage} width={className !== CardClass.Favorites ? '260' : '150'}
@@ -50,7 +50,7 @@ function OfferCard({offer, className, onOfferEnter, onOfferLeave}: OfferCardProp
           </div>
         </div>
         <h2 className='place-card__name'>
-          <Link to={AppRoute.Offer.replace(':id', offer.id)}>{offer.title}</Link>
+          <Link to={`${AppRoute.Offer}/${offer.id}`}>{offer.title}</Link>
         </h2>
         <p className='place-card__type'>{capitalize(offer.type)}</p>
       </div>

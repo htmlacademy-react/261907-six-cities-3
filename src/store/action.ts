@@ -1,15 +1,17 @@
 import {createAction} from '@reduxjs/toolkit';
-import {Sorting} from '../const';
 import {Offer} from '../types/offer';
 
-const changeCityAction = createAction<{city: string}>('changeCity');
+const changeCityAction = createAction<{city: string}>('main/changeCity');
 
-const changeSortingAction = createAction<{sorting: typeof Sorting[keyof typeof Sorting]}>('changeSorting');
+const loadOffersAction = createAction<{offers: Offer[]}>('data/loadOffers');
 
-const renderOffersAction = createAction<{offersToRender: Offer[]}>('renderOffers');
+const setErrorAction = createAction<{error: string | null}>('app/setError');
+
+const setOffersLoadingStatusAction = createAction<{isOffersLoading: boolean}>('data/setOffersLoadingStatus');
 
 export {
   changeCityAction,
-  changeSortingAction,
-  renderOffersAction
+  loadOffersAction,
+  setErrorAction,
+  setOffersLoadingStatusAction
 };

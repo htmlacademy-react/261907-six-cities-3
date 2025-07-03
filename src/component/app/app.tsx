@@ -1,6 +1,8 @@
 import {BrowserRouter, Routes, Route} from 'react-router-dom';
-import {Review} from '../../types/review';
 import {AppRoute, AuthorizationStatus} from '../../const';
+import {Review} from '../../types/review';
+import {useAppSelector} from '../../hooks';
+import LoadingScreen from '../../pages/loading-screen/loading-screen';
 import PrivateRoute from '../private-route/private-route';
 import MainScreen from '../../pages/main-screen/main-screen';
 import LoginScreen from '../../pages/login-screen/login-screen';
@@ -13,6 +15,14 @@ type AppProps = {
 }
 
 function App({reviews}: AppProps): JSX.Element {
+  const isOffersLoading = useAppSelector((state) => state.isOffersLoading);
+
+  if (isOffersLoading) {
+    return (
+      <LoadingScreen />
+    );
+  }
+
   return (
     <BrowserRouter>
       <Routes>
@@ -35,7 +45,7 @@ function App({reviews}: AppProps): JSX.Element {
           }
         />
         <Route
-          path={AppRoute.Offer}
+          path={`${AppRoute.Offer}/:id`}
           element={
             <OfferScreen
               reviews={reviews}

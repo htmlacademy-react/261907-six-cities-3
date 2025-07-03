@@ -1,12 +1,13 @@
 import {useEffect, useState} from 'react';
 import cn from 'classnames';
 import {Sorting} from '../../const';
-import {useAppDispatch, useAppSelector} from '../../hooks';
-import {changeSortingAction} from '../../store/action';
 
-function Sort(): JSX.Element {
-  const currentSorting = useAppSelector((state) => state.sorting);
-  const dispatch = useAppDispatch();
+type SortProps = {
+  sorting: Sorting;
+  onSortingChange: (requestedSorting: Sorting) => void;
+};
+
+function Sort({sorting, onSortingChange}: SortProps): JSX.Element {
   const [isOpened, setIsOpened] = useState(false);
 
   useEffect(() => {
@@ -52,15 +53,15 @@ function Sort(): JSX.Element {
             key={sortingType}
             className={cn(
               'places__option',
-              {'places__option--active': sortingType === currentSorting}
+              {'places__option--active': sortingType === sorting}
             )}
             tabIndex={0}
             onClick={() => {
-              if (sortingType === currentSorting) {
+              if (sortingType === sorting) {
                 return;
               }
 
-              dispatch(changeSortingAction({sorting: sortingType}));
+              onSortingChange(sortingType);
               setIsOpened(!isOpened);
             }}
           >
