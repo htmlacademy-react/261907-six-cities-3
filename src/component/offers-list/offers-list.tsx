@@ -7,9 +7,10 @@ type OffersListProps = {
   className: CardClass;
   offers: Offer[];
   onOfferEnter?: (offerId: string) => void;
+  onOfferLeave?: () => void;
 }
 
-function OffersList({className, offers, onOfferEnter}: OffersListProps): JSX.Element {
+function OffersList({className, offers, onOfferEnter, onOfferLeave}: OffersListProps): JSX.Element {
   return (
     <div
       className={cn(
@@ -30,6 +31,7 @@ function OffersList({className, offers, onOfferEnter}: OffersListProps): JSX.Ele
               onOfferEnter(offer.id);
             }
           }}
+          onOfferLeave={onOfferLeave}
         />
       ))}
     </div>

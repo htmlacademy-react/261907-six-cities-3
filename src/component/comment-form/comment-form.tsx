@@ -3,7 +3,7 @@ import {Rating} from '../../const';
 
 function CommentForm(): JSX.Element {
   const [formData, setFormData] = useState({
-    rating: '',
+    rating: 0,
     review: ''
   });
 
@@ -11,29 +11,30 @@ function CommentForm(): JSX.Element {
     <form className='reviews__form  form' action='#' method='post'>
       <label className='reviews__label  form__label' htmlFor='review'>Your review</label>
       <div className='reviews__rating-form  form__rating'>
-        {Object.entries(Rating).map(([title, value]) => {
-          const inputId = `${value}-star${value === '1' ? '' : 's'}`;
+        {Object.values(Rating).map((value, i) => {
+          const rating = i + 1;
+          const inputId = `${rating}-star${rating === 1 ? '' : 's'}`;
 
           return (
-            <React.Fragment key={value}>
+            <React.Fragment key={rating}>
               <input
                 className='form__rating-input  visually-hidden'
                 id={inputId}
                 name='rating'
-                value={value}
+                value={rating}
                 type='radio'
-                checked={value === formData.rating}
-                onChange={({target}: ChangeEvent<HTMLInputElement>): void => {
+                checked={rating === formData.rating}
+                onChange={(): void => {
                   setFormData({
                     ...formData,
-                    rating: target.value
+                    rating
                   });
                 }}
               />
               <label
                 className='reviews__rating-label  form__rating-label'
                 htmlFor={inputId}
-                title={value === Rating.NotBad ? 'not bad' : title.toLowerCase()}
+                title={value}
               >
                 <svg className='form__star-image' width='37' height='33'>
                   <use xlinkHref='#icon-star' />
