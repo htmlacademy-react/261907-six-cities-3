@@ -1,21 +1,10 @@
-import {PointerEvent} from 'react';
-import {useNavigate} from 'react-router-dom';
-import {CITIES, AppRoute} from '../../const';
-import {useAppDispatch} from '../../hooks';
-import {changeCityAction} from '../../store/action';
+import {CITIES} from '../../const';
 import Header from '../../component/header/header';
 import LoginForm from '../../component/login-form/login-form';
+import LinkToCity from '../../component/link-to-city/link-to-city';
 
 function LoginScreen() {
   const city: string = CITIES[3];
-  const dispatch = useAppDispatch();
-  const navigate = useNavigate();
-
-  const handleCityPick = (evt: PointerEvent<HTMLAnchorElement>) => {
-    evt.preventDefault();
-    dispatch(changeCityAction({city}));
-    navigate(AppRoute.Main);
-  };
 
   return (
     <div className='page  page--gray  page--login'>
@@ -28,9 +17,7 @@ function LoginScreen() {
           </section>
           <section className='locations  locations--login  locations--current'>
             <div className='locations__item'>
-              <a className='locations__item-link' href='#' onClick={handleCityPick}>
-                <span>{city}</span>
-              </a>
+              <LinkToCity city={city} />
             </div>
           </section>
         </div>
