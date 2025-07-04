@@ -1,6 +1,5 @@
 import {Routes, Route} from 'react-router-dom';
 import {AppRoute, AuthorizationStatus} from '../../const';
-import {Review} from '../../types/review';
 import {useAppSelector} from '../../hooks';
 import browserHistory from '../../browser-history';
 import LoadingScreen from '../../pages/loading-screen/loading-screen';
@@ -12,11 +11,7 @@ import FavoritesScreen from '../../pages/favorites-screen/favorites-screen';
 import OfferScreen from '../../pages/offer-screen/offer-screen';
 import NotFoundScreen from '../../pages/not-found-screen/not-found-screen';
 
-type AppProps = {
-  reviews: Review[];
-}
-
-function App({reviews}: AppProps): JSX.Element {
+function App(): JSX.Element {
   const isOffersLoading = useAppSelector((state) => state.isOffersLoading);
   const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
 
@@ -48,9 +43,7 @@ function App({reviews}: AppProps): JSX.Element {
         <Route
           path={`${AppRoute.Offer}/:id`}
           element={
-            <OfferScreen
-              reviews={reviews}
-            />
+            <OfferScreen />
           }
         />
         <Route

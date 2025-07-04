@@ -1,32 +1,19 @@
-import {PointerEvent} from 'react';
-import {useNavigate} from 'react-router-dom';
-import {AppRoute, CardClass} from '../../const';
+import {CardClass} from '../../const';
 import {LocationWithOffers} from '../../types/offer';
-import {useAppDispatch} from '../../hooks';
-import {changeCityAction} from '../../store/action';
 import OfferCard from '../offer-card/offer-card';
+import LinkToCity from '../link-to-city/link-to-city';
 
 type FavoriteLocationProps = {
   location: LocationWithOffers;
 };
 
 function FavoriteLocation({location}: FavoriteLocationProps) {
-  const dispatch = useAppDispatch();
-  const navigate = useNavigate();
-
-  const handleCityPick = (evt: PointerEvent<HTMLAnchorElement>) => {
-    evt.preventDefault();
-    dispatch(changeCityAction({city: location.name}));
-    navigate(AppRoute.Main);
-  };
 
   return (
     <li className='favorites__locations-items'>
       <div className='favorites__locations  locations  locations--current'>
         <div className='locations__item'>
-          <a className='locations__item-link' href='#' onClick={handleCityPick}>
-            <span>{location.name}</span>
-          </a>
+          <LinkToCity city={location.name} />
         </div>
       </div>
       <div className='favorites__places'>

@@ -28,6 +28,9 @@ export type Offer = {
   isPremium: boolean;
   rating: number;
   previewImage: string;
+};
+
+export type StandaloneOffer = Omit<Offer, 'previewImage'> & {
   description: string;
   bedrooms: number;
   goods: string[];

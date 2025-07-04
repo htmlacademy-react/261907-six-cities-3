@@ -1,4 +1,3 @@
-import {reviews} from './mocks/reviews';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import {Provider} from 'react-redux';
@@ -18,9 +17,7 @@ root.render(
   <React.StrictMode>
     <Provider store={store}>
       <ServerErrorNote />
-      <App
-        reviews={reviews}
-      />
+      <App />
     </Provider>
   </React.StrictMode>
 );

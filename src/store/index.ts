@@ -15,4 +15,7 @@ const store = configureStore({
     }).concat(redirect)
 });
 
-export {store};
+export {
+  api,
+  store
+};

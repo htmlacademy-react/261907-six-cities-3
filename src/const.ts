@@ -8,6 +8,8 @@ const EMAIL_CHECKING_REGEXP = new RegExp(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA
 
 const ERROR_TIMEOUT = 2000;
 
+const MIN_COMMENT_LENGTH = 50;
+
 const REQUEST_TIMEOUT = 5000;
 
 const URL_MARKER = '/img/pin.svg';
@@ -26,7 +28,9 @@ enum AppRoute {
   Main = '/',
   Login = '/login',
   Favorites = '/favorites',
-  Offer = '/offer'
+  Offer = '/offer',
+  Offers = '/offers',
+  Comments = '/comments'
 }
 
 enum AuthorizationStatus {
@@ -52,11 +56,11 @@ enum MapClass {
 }
 
 enum Rating {
-  Terribly = 'terribly',
-  Badly = 'badly',
-  NotBad = 'not bad',
+  Perfect = 'perfect',
   Good = 'good',
-  Perfect = 'perfect'
+  NotBad = 'not bad',
+  Badly = 'badly',
+  Terribly = 'terribly'
 }
 
 enum Sorting {
@@ -72,6 +76,7 @@ export {
   CITIES,
   EMAIL_CHECKING_REGEXP,
   ERROR_TIMEOUT,
+  MIN_COMMENT_LENGTH,
   REQUEST_TIMEOUT,
   URL_MARKER,
   URL_MARKER_ACTIVE,
