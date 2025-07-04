@@ -1,17 +1,11 @@
 import {Link} from 'react-router-dom';
 import {AppRoute} from '../../const';
-import Logo from '../../component/logo/logo';
+import Header from '../../component/header/header';
 
 function NotFoundScreen(): JSX.Element {
   return (
     <div className='page  page--gray  page--login'>
-      <header className='header'>
-        <div className='container'>
-          <div className='header__wrapper'>
-            <Logo />
-          </div>
-        </div>
-      </header>
+      <Header />
       <main className='page__main  page__main--login'>
         <div className='page__login-container  container'>
           <section className='login'>

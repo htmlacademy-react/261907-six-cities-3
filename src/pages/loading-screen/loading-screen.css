@@ -40,5 +40,5 @@
 
   background: #4481c3;
 
-  animation: animloader 5s linear infinite;
+  animation: animloader 2.5s ease-out infinite;
 }

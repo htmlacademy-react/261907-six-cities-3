@@ -1,6 +1,10 @@
+const AUTHORIZATION_TOKEN_KEY = 'six-cities-token';
+
 const BACKEND_URL = 'https://15.design.htmlacademy.pro/six-cities';
 
 const CITIES = ['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseldorf'];
+
+const EMAIL_CHECKING_REGEXP = new RegExp(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/);
 
 const ERROR_TIMEOUT = 2000;
 
@@ -63,8 +67,10 @@ enum Sorting {
 }
 
 export {
+  AUTHORIZATION_TOKEN_KEY,
   BACKEND_URL,
   CITIES,
+  EMAIL_CHECKING_REGEXP,
   ERROR_TIMEOUT,
   REQUEST_TIMEOUT,
   URL_MARKER,
