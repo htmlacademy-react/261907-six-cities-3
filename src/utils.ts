@@ -5,6 +5,10 @@ function capitalize(value: string): string {
   return `${value.charAt(0).toUpperCase()}${value.slice(1)}`;
 }
 
+function findFavorites(offers: Offer[]): Offer[] {
+  return offers.filter((offer: Offer) => offer.isFavorite);
+}
+
 function sortOffersByLocation(offers: Offer[]): LocationWithOffers[] {
   const result: LocationWithOffers[] = [];
 
@@ -53,6 +57,7 @@ function updateOffersToRender(offers: Offer[], city: string, sorting: Sorting): 
 
 export {
   capitalize,
+  findFavorites,
   sortOffersByLocation,
   updateOffersToRender
 };

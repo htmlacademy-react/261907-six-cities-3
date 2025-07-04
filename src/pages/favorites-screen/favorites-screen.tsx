@@ -1,53 +1,63 @@
+import cn from 'classnames';
 import {Offer} from '../../types/offer';
-import {sortOffersByLocation} from '../../utils';
+import {findFavorites, sortOffersByLocation} from '../../utils';
 import {useAppSelector} from '../../hooks';
-import Logo from '../../component/logo/logo';
+import Header from '../../component/header/header';
+import UserInfo from '../../component/user-info/user-info';
 import FavoriteLocation from '../../component/favorite-location/favorite-location';
+import { Link } from 'react-router-dom';
+import { AppRoute } from '../../const';
 
 function FavoritesScreen() {
   const offers: Offer[] = useAppSelector((state) => state.offers);
-  const sortedOffers = sortOffersByLocation(offers);
+  const favoriteOffers: Offer[] = findFavorites(offers);
+  const sortedOffers = sortOffersByLocation(favoriteOffers);
 
   return (
-    <div className='page'>
-      <header className='header'>
-        <div className='container'>
-          <div className='header__wrapper'>
-            <Logo />
-            <nav className='header__nav'>
-              <ul className='header__nav-list'>
-                <li className='header__nav-item  user'>
-                  <a className='header__nav-link  header__nav-link--profile' href='#'>
-                    <div className='header__avatar-wrapper  user__avatar-wrapper'>
-                    </div>
-                    <span className='header__user-name  user__name'>Oliver.conner@gmail.com</span>
-                    <span className='header__favorite-count'>3</span>
-                  </a>
-                </li>
-                <li className='header__nav-item'>
-                  <a className='header__nav-link' href='#'>
-                    <span className='header__signout'>Sign out</span>
-                  </a>
-                </li>
-              </ul>
-            </nav>
-          </div>
-        </div>
-      </header>
-      <main className='page__main  page__main--favorites'>
+    <div
+      className={cn(
+        'page',
+        {'page--favorites-empty': !sortedOffers.length}
+      )}
+    >
+      <Header>
+        <UserInfo />
+      </Header>
+      <main
+        className={cn(
+          'page__main  page__main--favorites',
+          {'page__main--favorites-empty': !sortedOffers.length}
+        )}
+      >
         <div className='page__favorites-container  container'>
-          <section className='favorites'>
-            <h1 className='favorites__title'>Saved listing</h1>
-            <ul className='favorites__list'>
-              {sortedOffers.map((location) => <FavoriteLocation key={location.name} location={location}/>)}
-            </ul>
+          <section
+            className={cn(
+              'favorites',
+              {'favorites--empty': !sortedOffers.length}
+            )}
+          >
+            <h1 className={sortedOffers.length ? 'favorites__title' : 'visually-hidden'}>
+              {sortedOffers.length ? 'Saved listing' : 'Favorites (empty)'}
+            </h1>
+            {sortedOffers.length
+              ? (
+                <ul className='favorites__list'>
+                  {sortedOffers.map((location) => <FavoriteLocation key={location.name} location={location}/>)}
+                </ul>
+              )
+              : (
+                <div className='favorites__status-wrapper'>
+                  <b className='favorites__status'>Nothing yet saved.</b>
+                  <p className='favorites__status-description'>Save properties to narrow down search or plan your future trips.</p>
+                </div>
+              )}
           </section>
         </div>
       </main>
       <footer className='footer container'>
-        <a className='footer__logo-link' href='main.html'>
+        <Link className='footer__logo-link' to={AppRoute.Main}>
           <img className='footer__logo' src='img/logo.svg' alt='6 cities logo' width='64' height='33' />
-        </a>
+        </Link>
       </footer>
     </div>
   );
