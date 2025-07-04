@@ -6,7 +6,7 @@ import {AuthorizationData, UserData} from '../types/user';
 import {Offer} from '../types/offer';
 import {loadOffersAction, redirectToRouteAction, setAuthorizationStatusAction, setErrorAction, setOffersLoadingStatusAction, setUserDataAction} from './action';
 import {store} from './';
-import {dropToken, getToken, saveToken} from '../services/token';
+import {dropToken, saveToken} from '../services/token';
 
 type ThunkOptions = {
   dispatch: AppDispatch;
