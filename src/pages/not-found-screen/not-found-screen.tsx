@@ -1,3 +1,4 @@
+import {Helmet} from 'react-helmet-async';
 import {Link} from 'react-router-dom';
 import {AppRoute, CITIES} from '../../const';
 import Header from '../../component/header/header';
@@ -8,7 +9,10 @@ function NotFoundScreen(): JSX.Element {
 
   return (
     <div className='page  page--gray  page--login'>
-      <Header />
+      <Helmet>
+        <title>6 cities: nothing here</title>
+      </Helmet>
+      <Header shouldRenderUserInfo={false} />
       <main className='page__main  page__main--login'>
         <div className='page__login-container  container'>
           <section className='login'>

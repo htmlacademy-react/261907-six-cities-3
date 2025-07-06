@@ -1,13 +1,15 @@
 import {useEffect} from 'react';
 import {useParams} from 'react-router-dom';
+import {Helmet} from 'react-helmet-async';
 import cn from 'classnames';
 import {AuthorizationStatus, BookMarkButtonClass, CardClass, MapClass} from '../../const';
 import {capitalize} from '../../utils';
 import {useAppDispatch, useAppSelector} from '../../hooks';
+import {getNearPlaces, getNearPlacesLoadingStatus, getOfferErrorStatus, getReviews, getReviewsLoadingStatus, getStandaloneOffer, getStandaloneOfferLoadingStatus} from '../../store/app-data/app-data.selectors';
+import {getAuthorizationStatus} from '../../store/user-process/user-process.selectors';
 import {requestNearPlacesAction, requestReviewsForOfferAction, requestStandaloneOfferAction} from '../../store/api-action';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
 import Header from '../../component/header/header';
-import UserInfo from '../../component/user-info/user-info';
 import BookmarkButton from '../../component/bookmark-button/bookmark-button';
 import ReviewsList from '../../component/reviews-list/reviews-list';
 import CommentForm from '../../component/comment-form/comment-form';
@@ -25,16 +27,16 @@ function OfferScreen(): JSX.Element {
   const params = useParams();
 
   const isLoading: IsLoading = {
-    offer: useAppSelector((state) => state.isStandaloneOfferLoading),
-    reviews: useAppSelector((state) => state.isReviewsLoading),
-    nearPlaces: useAppSelector((state) => state.isNearPlacesLoading)
+    offer: useAppSelector(getStandaloneOfferLoadingStatus),
+    reviews: useAppSelector(getReviewsLoadingStatus),
+    nearPlaces: useAppSelector(getNearPlacesLoadingStatus)
   };
 
-  const requestedOffer = useAppSelector((state) => state.requestedOffer);
-  const reviews = useAppSelector((state) => state.reviews);
-  const nearPlaces = useAppSelector((state) => state.nearPlaces);
-  const isOfferNotFound = useAppSelector((state) => state.isOfferNotFound);
-  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
+  const requestedOffer = useAppSelector(getStandaloneOffer);
+  const reviews = useAppSelector(getReviews);
+  const nearPlaces = useAppSelector(getNearPlaces);
+  const isOfferNotFound = useAppSelector(getOfferErrorStatus);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
   const isAuthorized = authorizationStatus === AuthorizationStatus.Auth;
 
   const dispatch = useAppDispatch();
@@ -57,9 +59,10 @@ function OfferScreen(): JSX.Element {
 
   return (
     <div className='page'>
-      <Header>
-        <UserInfo />
-      </Header>
+      <Helmet>
+        <title>6 cities: offer</title>
+      </Helmet>
+      <Header shouldRenderUserInfo />
       <main className='page__main  page__main--offer'>
         <section className='offer'>
           <div className='offer__gallery-container  container'>
@@ -125,10 +128,17 @@ function OfferScreen(): JSX.Element {
                 </div>
               </div>
               <section className='offer__reviews  reviews'>
-                <h2 className='reviews__title'>
-                  Reviews &middot;
-                  <span className='reviews__amount'>{reviews.length}</span>
-                </h2>
+                {(isAuthorized || Boolean(reviews.length)) && (
+                  <h2 className='reviews__title'>
+                    Reviews
+                    {Boolean(reviews.length) && (
+                      <>
+                        &nbsp;&middot;&nbsp;
+                        <span className='reviews__amount'>{reviews.length}</span>
+                      </>
+                    )}
+                  </h2>
+                )}
                 <ReviewsList reviews={reviews} />
                 {isAuthorized && <CommentForm />}
               </section>

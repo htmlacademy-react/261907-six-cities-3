@@ -2,7 +2,7 @@ import {PointerEvent} from 'react';
 import {useNavigate} from 'react-router-dom';
 import {AppRoute} from '../../const';
 import {useAppDispatch} from '../../hooks';
-import {changeCityAction} from '../../store/action';
+import {changeCityAction} from '../../store/app-process/app-process.slice';
 
 type LinkToCityProps = {
   city: string;
@@ -14,7 +14,7 @@ function LinkToCity({city}: LinkToCityProps) {
 
   const handleCityPick = (evt: PointerEvent<HTMLAnchorElement>) => {
     evt.preventDefault();
-    dispatch(changeCityAction({city}));
+    dispatch(changeCityAction(city));
     navigate(AppRoute.Main);
   };
 

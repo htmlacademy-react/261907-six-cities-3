@@ -4,11 +4,13 @@ import {AppRoute, AuthorizationStatus} from '../../const';
 import {findFavorites} from '../../utils';
 import {useAppDispatch, useAppSelector} from '../../hooks';
 import {logoutAction} from '../../store/api-action';
+import {getAuthorizationStatus, getUser} from '../../store/user-process/user-process.selectors';
+import {getOffers} from '../../store/app-data/app-data.selectors';
 
 function UserInfo(): JSX.Element {
-  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
-  const user = useAppSelector((state) => state.user);
-  const offers = useAppSelector((state) => state.offers);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
+  const user = useAppSelector(getUser);
+  const offers = useAppSelector(getOffers);
   const isAuthorized = authorizationStatus === AuthorizationStatus.Auth;
   const favoritesCount = findFavorites(offers).length;
   const dispatch = useAppDispatch();

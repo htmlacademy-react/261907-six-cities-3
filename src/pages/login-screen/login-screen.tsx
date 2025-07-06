@@ -1,3 +1,4 @@
+import {Helmet} from 'react-helmet-async';
 import {CITIES} from '../../const';
 import Header from '../../component/header/header';
 import LoginForm from '../../component/login-form/login-form';
@@ -8,7 +9,10 @@ function LoginScreen() {
 
   return (
     <div className='page  page--gray  page--login'>
-      <Header />
+      <Helmet>
+        <title>6 cities: authorization</title>
+      </Helmet>
+      <Header shouldRenderUserInfo={false} />
       <main className='page__main  page__main--login'>
         <div className='page__login-container  container'>
           <section className='login'>

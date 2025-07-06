@@ -1,10 +1,12 @@
-import {useState} from 'react';
+import {memo, useCallback, useState} from 'react';
+import {Helmet} from 'react-helmet-async';
 import cn from 'classnames';
 import {CardClass, MapClass, Sorting} from '../../const';
 import {updateOffersToRender} from '../../utils';
 import {useAppSelector} from '../../hooks';
+import {getOffers} from '../../store/app-data/app-data.selectors';
+import {getCity} from '../../store/app-process/app-process.selectors';
 import Header from '../../component/header/header';
-import UserInfo from '../../component/user-info/user-info';
 import LocationsList from '../../component/locations-list/location-list';
 import CityEmpty from '../../component/city-empty/city-empty';
 import Map from '../../component/map/map';
@@ -12,16 +14,20 @@ import CityOffers from '../../component/city-offers/city-offers';
 import Sort from '../../component/sort/sort';
 import OffersList from '../../component/offers-list/offers-list';
 
+const MemorizedHeader = memo(Header);
+const MemorizedLocationsList = memo(LocationsList);
+const MemorizedSort = memo(Sort);
+
 function MainScreen(): JSX.Element {
   const [enteredOffer, setEnteredOffer] = useState('');
   const [sorting, setSorting] = useState(Sorting.Popular);
-  const offers = useAppSelector((state) => state.offers);
-  const activeCity = useAppSelector((state) => state.city);
+  const offers = useAppSelector(getOffers);
+  const activeCity = useAppSelector(getCity);
   const offersToRender = updateOffersToRender(offers, activeCity, sorting);
 
-  const handleSortingChange = (requestedSorting: Sorting) => {
+  const handleSortingChange = useCallback((requestedSorting: Sorting) => {
     setSorting(requestedSorting);
-  };
+  }, []);
 
   const handleOfferEnter = (offerId: string) => {
     setEnteredOffer(offerId);
@@ -33,9 +39,10 @@ function MainScreen(): JSX.Element {
 
   return (
     <div className='page  page--gray  page--main'>
-      <Header>
-        <UserInfo />
-      </Header>
+      <Helmet>
+        <title>6 cities</title>
+      </Helmet>
+      <MemorizedHeader shouldRenderUserInfo />
       <main
         className={cn(
           'page__main  page__main--index',
@@ -45,7 +52,7 @@ function MainScreen(): JSX.Element {
         <h1 className='visually-hidden'>Cities</h1>
         <div className='tabs'>
           <section className='locations  container'>
-            <LocationsList />
+            <MemorizedLocationsList />
           </section>
         </div>
         <div className='cities'>
@@ -58,7 +65,7 @@ function MainScreen(): JSX.Element {
             {offersToRender.length
               ? (
                 <CityOffers city={activeCity} offers={offersToRender}>
-                  <Sort sorting={sorting} onSortingChange={handleSortingChange} />
+                  <MemorizedSort sorting={sorting} onSortingChange={handleSortingChange} />
                   <OffersList
                     className={CardClass.Cities}
                     offers={offersToRender}

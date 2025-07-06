@@ -1,20 +1,21 @@
 import cn from 'classnames';
 import {useAppDispatch, useAppSelector} from '../../hooks';
-import { changeCityAction } from '../../store/action';
+import {getCity} from '../../store/app-process/app-process.selectors';
+import {changeCityAction} from '../../store/app-process/app-process.slice';
 
 type LocationTabProps = {
   city: string;
 };
 
 function LocationTab({city}: LocationTabProps): JSX.Element {
-  const activeCity = useAppSelector((state) => state.city);
+  const activeCity = useAppSelector(getCity);
   const dispatch = useAppDispatch();
 
   return (
     <li
       className='locations__item'
       onClick={() => {
-        dispatch(changeCityAction({city: city}));
+        dispatch(changeCityAction(city));
       }}
     >
       <a

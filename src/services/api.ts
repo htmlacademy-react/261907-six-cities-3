@@ -1,8 +1,8 @@
 import axios, {AxiosError, AxiosInstance, AxiosResponse, InternalAxiosRequestConfig} from 'axios';
 import {StatusCodes} from 'http-status-codes';
+import {toast} from 'react-toastify';
 import {BACKEND_URL, REQUEST_TIMEOUT} from '../const';
 import {getToken} from './token';
-import {processErrorHandle} from './process-error-handle';
 
 type MessageDetails = {
   type: string;
@@ -41,7 +41,7 @@ function createApi(): AxiosInstance {
       if (error.response && shouldShowError(error.response)) {
         const messageDetails = (error.response.data);
 
-        processErrorHandle(messageDetails.message);
+        toast.warn(messageDetails.message);
       }
     }
   );

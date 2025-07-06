@@ -1,15 +1,16 @@
+import {Link} from 'react-router-dom';
+import {Helmet} from 'react-helmet-async';
 import cn from 'classnames';
+import {AppRoute} from '../../const';
 import {Offer} from '../../types/offer';
 import {findFavorites, sortOffersByLocation} from '../../utils';
 import {useAppSelector} from '../../hooks';
+import {getOffers} from '../../store/app-data/app-data.selectors';
 import Header from '../../component/header/header';
-import UserInfo from '../../component/user-info/user-info';
 import FavoriteLocation from '../../component/favorite-location/favorite-location';
-import { Link } from 'react-router-dom';
-import { AppRoute } from '../../const';
 
 function FavoritesScreen() {
-  const offers: Offer[] = useAppSelector((state) => state.offers);
+  const offers: Offer[] = useAppSelector(getOffers);
   const favoriteOffers: Offer[] = findFavorites(offers);
   const sortedOffers = sortOffersByLocation(favoriteOffers);
 
@@ -20,9 +21,10 @@ function FavoritesScreen() {
         {'page--favorites-empty': !sortedOffers.length}
       )}
     >
-      <Header>
-        <UserInfo />
-      </Header>
+      <Helmet>
+        <title>6 cities: favorites</title>
+      </Helmet>
+      <Header shouldRenderUserInfo />
       <main
         className={cn(
           'page__main  page__main--favorites',
