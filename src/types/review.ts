@@ -1,3 +1,13 @@
+export type Comment = {
+  rating: number;
+  comment: string;
+};
+
+export type CommentOptions = {
+  id: string;
+  commentData: Comment;
+};
+
 type User = {
   name: string;
   avatarUrl: string;
@@ -11,3 +21,5 @@ export type Review = {
   comment: string;
   rating: number;
 };
+
+

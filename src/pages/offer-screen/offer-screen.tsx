@@ -79,7 +79,7 @@ function OfferScreen(): JSX.Element {
               {requestedOffer.isPremium && <div className='offer__mark'><span>Premium</span></div>}
               <div className='offer__name-wrapper'>
                 <h1 className='offer__name'>{requestedOffer.title}</h1>
-                <BookmarkButton className={BookMarkButtonClass.Offer} isFavorite={requestedOffer.isFavorite} />
+                <BookmarkButton className={BookMarkButtonClass.Offer} isFavorite={requestedOffer.isFavorite} id={requestedOffer.id} />
               </div>
               <div className='offer__rating  rating'>
                 <div className='offer__stars  rating__stars'>

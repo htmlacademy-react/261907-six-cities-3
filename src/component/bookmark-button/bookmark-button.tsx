@@ -1,12 +1,35 @@
+import {PointerEvent} from 'react';
+import {useNavigate} from 'react-router-dom';
 import cn from 'classnames';
-import {BookMarkButtonClass} from '../../const';
+import {AppRoute, AuthorizationStatus, BookMarkButtonClass} from '../../const';
+import {useAppDispatch, useAppSelector} from '../../hooks';
+import {getAuthorizationStatus} from '../../store/user-process/user-process.selectors';
+import {changeFavoriteStatusAction} from '../../store/api-action';
 
 type BookmarkButtonProps = {
   className: BookMarkButtonClass;
   isFavorite: boolean;
+  id: string;
 }
 
-function BookmarkButton({className, isFavorite}: BookmarkButtonProps): JSX.Element {
+function BookmarkButton({className, isFavorite, id}: BookmarkButtonProps): JSX.Element {
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
+  const handleFavoriteClick = (evt: PointerEvent<HTMLButtonElement>) => {
+    evt.preventDefault();
+
+    if (authorizationStatus === AuthorizationStatus.NoAuth) {
+      navigate(AppRoute.Login);
+    }
+
+    dispatch(changeFavoriteStatusAction({
+      id: id,
+      status: Number(!isFavorite)
+    }));
+  };
+
   return (
     <button
       className={cn(
@@ -14,6 +37,7 @@ function BookmarkButton({className, isFavorite}: BookmarkButtonProps): JSX.Eleme
         {[`${className}__bookmark-button--active`]: isFavorite}
       )}
       type='button'
+      onClick={handleFavoriteClick}
     >
       <svg className={`${className}__bookmark-icon`} width={className === BookMarkButtonClass.Offer ? '31' : '18'} height={className === BookMarkButtonClass.Offer ? '33' : '19'}>
         <use xlinkHref='#icon-bookmark'></use>

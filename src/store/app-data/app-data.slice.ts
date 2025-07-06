@@ -1,7 +1,8 @@
 import {createSlice} from '@reduxjs/toolkit';
 import {NameSpace} from '../../const';
 import {InitialState} from '../../types/state';
-import {getOffersAction, requestNearPlacesAction, requestReviewsForOfferAction, requestStandaloneOfferAction, sendCommentAction} from '../api-action';
+import {changeFavoriteStatusAction, getFavoritesAction, getOffersAction, logoutAction, requestNearPlacesAction, requestReviewsForOfferAction, requestStandaloneOfferAction, sendCommentAction} from '../api-action';
+import {checkFavorites, clearFavorites, findOffersAndChangeFavoriteStatus} from '../../utils';
 
 const initialState: Pick<InitialState, 'isNearPlacesLoading' | 'isOffersLoading' | 'isOfferNotFound' | 'isReviewsLoading' | 'isStandaloneOfferLoading' | 'nearPlaces' |'offers' | 'requestedOffer' |'reviews'> = {
   isNearPlacesLoading: false,
@@ -21,12 +22,31 @@ const appData = createSlice({
   reducers: {},
   extraReducers(builder) {
     builder
+      .addCase(changeFavoriteStatusAction.fulfilled, (state, action) => {
+        state.offers = findOffersAndChangeFavoriteStatus(state.offers, action.payload);
+
+        if (state.requestedOffer && state.requestedOffer.id === action.payload.id) {
+          state.requestedOffer.isFavorite = action.payload.isFavorite;
+        } else if (state.nearPlaces) {
+          state.nearPlaces = findOffersAndChangeFavoriteStatus(state.nearPlaces, action.payload);
+        }
+      })
+      .addCase(getFavoritesAction.fulfilled, (state, action) => {
+        state.offers = checkFavorites(state.offers, action.payload);
+      })
       .addCase(getOffersAction.pending, (state) => {
         state.isOffersLoading = true;
       })
       .addCase(getOffersAction.fulfilled, (state, action) => {
         state.isOffersLoading = false;
         state.offers = action.payload;
+      })
+      .addCase(getOffersAction.rejected, (state) => {
+        state.isOffersLoading = false;
+        state.offers = [];
+      })
+      .addCase(logoutAction.fulfilled, (state) => {
+        state.offers = clearFavorites(state.offers);
       })
       .addCase(requestNearPlacesAction.pending, (state) => {
         state.isNearPlacesLoading = true;

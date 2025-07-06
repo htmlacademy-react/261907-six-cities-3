@@ -11,6 +11,11 @@ export type City = {
   location: Location;
 };
 
+export type FavoriteData = {
+  id: string;
+  status: number;
+};
+
 type Host = {
   name: string;
   avatarUrl: string;
@@ -30,6 +35,11 @@ export type Offer = {
   previewImage: string;
 };
 
+export type LocationWithOffers = {
+  name: string;
+  offers: Offer[];
+}
+
 export type StandaloneOffer = Omit<Offer, 'previewImage'> & {
   description: string;
   bedrooms: number;
@@ -38,8 +48,3 @@ export type StandaloneOffer = Omit<Offer, 'previewImage'> & {
   images: string[];
   maxAdults: number;
 };
-
-export type LocationWithOffers = {
-  name: string;
-  offers: Offer[];
-}

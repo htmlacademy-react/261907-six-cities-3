@@ -3,16 +3,6 @@ export type AuthorizationData = {
   password: string;
 };
 
-export type Comment = {
-  rating: number;
-  comment: string;
-}
-
-export type CommentOptions = {
-  id: string;
-  commentData: Comment;
-}
-
 export type UserData = {
   name: string;
   avatarUrl: string;
