@@ -2,7 +2,7 @@ import {memo, useCallback, useState} from 'react';
 import {Helmet} from 'react-helmet-async';
 import cn from 'classnames';
 import {CardClass, MapClass, Sorting} from '../../const';
-import {updateOffersToRender} from '../../utils';
+import {updateOffersToRender} from '../../utils/offers';
 import {useAppSelector} from '../../hooks';
 import {getOffers} from '../../store/app-data/app-data.selectors';
 import {getCity} from '../../store/app-process/app-process.selectors';

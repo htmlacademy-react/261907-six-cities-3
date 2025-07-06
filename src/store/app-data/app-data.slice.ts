@@ -2,7 +2,7 @@ import {createSlice} from '@reduxjs/toolkit';
 import {NameSpace} from '../../const';
 import {InitialState} from '../../types/state';
 import {changeFavoriteStatusAction, getFavoritesAction, getOffersAction, logoutAction, requestNearPlacesAction, requestReviewsForOfferAction, requestStandaloneOfferAction, sendCommentAction} from '../api-action';
-import {checkFavorites, clearFavorites, findOffersAndChangeFavoriteStatus} from '../../utils';
+import {checkFavorites, clearFavorites, findOffersAndChangeFavoriteStatus} from '../../utils/offers';
 
 const initialState: Pick<InitialState, 'isNearPlacesLoading' | 'isOffersLoading' | 'isOfferNotFound' | 'isReviewsLoading' | 'isStandaloneOfferLoading' | 'nearPlaces' |'offers' | 'requestedOffer' |'reviews'> = {
   isNearPlacesLoading: false,

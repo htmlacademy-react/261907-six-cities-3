@@ -1,9 +1,5 @@
-import {Sorting} from './const';
-import {Offer, LocationWithOffers} from './types/offer';
-
-function capitalize(value: string): string {
-  return `${value.charAt(0).toUpperCase()}${value.slice(1)}`;
-}
+import {Sorting} from '../const';
+import {Offer, LocationWithOffers} from '../types/offer';
 
 function checkFavorites(offers: Offer[], favorites: Offer[]): Offer[] {
   const favoritesIds = favorites.map((offer: Offer) => offer.id);
@@ -76,7 +72,6 @@ function updateOffersToRender(offers: Offer[], city: string, sorting: Sorting): 
 }
 
 export {
-  capitalize,
   checkFavorites,
   clearFavorites,
   findFavorites,

@@ -1,7 +1,7 @@
 import {PointerEvent} from 'react';
 import {Link} from 'react-router-dom';
 import {AppRoute, AuthorizationStatus} from '../../const';
-import {findFavorites} from '../../utils';
+import {findFavorites} from '../../utils/offers';
 import {useAppDispatch, useAppSelector} from '../../hooks';
 import {logoutAction} from '../../store/api-action';
 import {getAuthorizationStatus, getUser} from '../../store/user-process/user-process.selectors';

@@ -3,7 +3,7 @@ import {Helmet} from 'react-helmet-async';
 import cn from 'classnames';
 import {AppRoute} from '../../const';
 import {Offer} from '../../types/offer';
-import {findFavorites, sortOffersByLocation} from '../../utils';
+import {findFavorites, sortOffersByLocation} from '../../utils/offers';
 import {useAppSelector} from '../../hooks';
 import {getOffers} from '../../store/app-data/app-data.selectors';
 import Header from '../../component/header/header';
