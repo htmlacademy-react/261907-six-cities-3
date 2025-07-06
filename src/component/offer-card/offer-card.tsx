@@ -41,7 +41,7 @@ function OfferCard({offer, className, onOfferEnter, onOfferLeave}: OfferCardProp
             <b className='place-card__price-value'>&euro;{offer.price}</b>
             <span className='place-card__price-text'>&#47;&nbsp;night</span>
           </div>
-          <BookmarkButton className={BookMarkButtonClass.PlaceCard} isFavorite={offer.isFavorite} />
+          <BookmarkButton className={BookMarkButtonClass.PlaceCard} isFavorite={offer.isFavorite} id={offer.id} />
         </div>
         <div className='place-card__rating  rating'>
           <div className='place-card__stars  rating__stars'>

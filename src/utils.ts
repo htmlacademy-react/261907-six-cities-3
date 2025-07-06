@@ -5,8 +5,28 @@ function capitalize(value: string): string {
   return `${value.charAt(0).toUpperCase()}${value.slice(1)}`;
 }
 
+function checkFavorites(offers: Offer[], favorites: Offer[]): Offer[] {
+  const favoritesIds = favorites.map((offer: Offer) => offer.id);
+
+  return offers.map((offer: Offer) => ({...offer, isFavorite: favoritesIds.includes(offer.id)}));
+}
+
+function clearFavorites(offers: Offer[]): Offer[] {
+  return offers.map((offer: Offer) => ({...offer, isFavorite: false}));
+}
+
 function findFavorites(offers: Offer[]): Offer[] {
   return offers.filter((offer: Offer) => offer.isFavorite);
+}
+
+function findOffersAndChangeFavoriteStatus(offers: Offer[], {id, isFavorite}: Offer): Offer[] {
+  const offerToUpdate = offers.find((offer) => offer.id === id);
+
+  if (offerToUpdate) {
+    offerToUpdate.isFavorite = isFavorite;
+  }
+
+  return offers;
 }
 
 function sortOffersByLocation(offers: Offer[]): LocationWithOffers[] {
@@ -57,7 +77,10 @@ function updateOffersToRender(offers: Offer[], city: string, sorting: Sorting): 
 
 export {
   capitalize,
+  checkFavorites,
+  clearFavorites,
   findFavorites,
+  findOffersAndChangeFavoriteStatus,
   sortOffersByLocation,
   updateOffersToRender
 };

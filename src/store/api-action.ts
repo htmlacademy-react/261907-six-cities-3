@@ -2,9 +2,9 @@ import {createAsyncThunk} from '@reduxjs/toolkit';
 import {AxiosInstance} from 'axios';
 import {ApiRoute, AppRoute} from '../const';
 import {AppDispatch, State} from '../types/state';
-import {AuthorizationData, CommentOptions, UserData} from '../types/user';
-import {Offer, StandaloneOffer} from '../types/offer';
-import {Review} from '../types/review';
+import {AuthorizationData, UserData} from '../types/user';
+import {FavoriteData, Offer, StandaloneOffer} from '../types/offer';
+import {CommentOptions, Review} from '../types/review';
 import {redirectToRouteAction} from './action';
 import {dropToken, saveToken} from '../services/token';
 
@@ -14,10 +14,28 @@ type ThunkOptions = {
   extra: AxiosInstance;
 };
 
+const changeFavoriteStatusAction = createAsyncThunk<Offer, FavoriteData, ThunkOptions>(
+  'data/changeFavoriteStatus',
+  async ({id, status}, {extra: api}) => {
+    const {data} = await api.post<Offer>(`${ApiRoute.Favorite}/${id}/${status}`);
+
+    return data;
+  }
+);
+
 const checkAuthorizationAction = createAsyncThunk<UserData, undefined, ThunkOptions>(
   'user/checkAuthorization',
   async (_arg, {extra: api}) => {
     const {data} = await api.get<UserData>(ApiRoute.Login);
+
+    return data;
+  }
+);
+
+const getFavoritesAction = createAsyncThunk<Offer[], undefined, ThunkOptions>(
+  'data/getFavorites',
+  async (_arg, {extra: api}) => {
+    const {data} = await api.get<Offer[]>(ApiRoute.Favorite);
 
     return data;
   }
@@ -38,6 +56,7 @@ const loginAction = createAsyncThunk<UserData, AuthorizationData, ThunkOptions>(
     const {data} = await api.post<UserData>(ApiRoute.Login, {email, password});
 
     saveToken(data.token);
+    dispatch(getFavoritesAction());
     dispatch(redirectToRouteAction(AppRoute.Main));
 
     return data;
@@ -90,7 +109,9 @@ const sendCommentAction = createAsyncThunk<Review, CommentOptions, ThunkOptions>
 );
 
 export {
+  changeFavoriteStatusAction,
   checkAuthorizationAction,
+  getFavoritesAction,
   getOffersAction,
   loginAction,
   logoutAction,
