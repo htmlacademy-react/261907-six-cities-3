@@ -6,8 +6,6 @@ const CITIES = ['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseld
 
 const EMAIL_CHECKING_REGEXP = new RegExp(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/);
 
-const ERROR_TIMEOUT = 2000;
-
 const MIN_COMMENT_LENGTH = 50;
 
 const REQUEST_TIMEOUT = 5000;
@@ -55,6 +53,12 @@ enum MapClass {
   Offer = 'offer'
 }
 
+enum NameSpace {
+  App = 'APP',
+  Data = 'DATA',
+  User = 'USER'
+}
+
 enum Rating {
   Perfect = 'perfect',
   Good = 'good',
@@ -75,7 +79,6 @@ export {
   BACKEND_URL,
   CITIES,
   EMAIL_CHECKING_REGEXP,
-  ERROR_TIMEOUT,
   MIN_COMMENT_LENGTH,
   REQUEST_TIMEOUT,
   URL_MARKER,
@@ -86,6 +89,7 @@ export {
   BookMarkButtonClass,
   CardClass,
   MapClass,
+  NameSpace,
   Rating,
   Sorting
 };

@@ -1,15 +1,17 @@
-import {PropsWithChildren} from 'react';
 import Logo from '../logo/logo';
+import UserInfo from '../user-info/user-info';
 
-type HeaderProps = PropsWithChildren;
+type HeaderProps = {
+  shouldRenderUserInfo: boolean;
+};
 
-function Header({children}: HeaderProps): JSX.Element {
+function Header({shouldRenderUserInfo}: HeaderProps): JSX.Element {
   return (
     <header className='header'>
       <div className='container'>
         <div className='header__wrapper'>
           <Logo />
-          {children}
+          {shouldRenderUserInfo && <UserInfo />}
         </div>
       </div>
     </header>
