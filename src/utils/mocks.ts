@@ -1,7 +1,7 @@
 import {Action} from 'redux';
 import {ThunkDispatch} from 'redux-thunk';
 import {address, datatype, date, internet, lorem, name} from 'faker';
-import {CITIES} from '../const';
+import {CITIES, AuthorizationStatus} from '../const';
 import {Offer, StandaloneOffer} from '../types/offer';
 import {Review} from '../types/review';
 import {UserData} from '../types/user';
@@ -90,10 +90,38 @@ function makeMockUser(): UserData {
   };
 }
 
+function makeMockStore(initialState?: Partial<State>): State {
+  return {
+    APP: {
+      city: CITIES[datatype.number(5)]
+    },
+    DATA: {
+      isCommentProcessing: false,
+      isFavoriteProcessing: false,
+      isNearPlacesLoading: false,
+      isOffersLoading: false,
+      isOfferNotFound: false,
+      isReviewsLoading: false,
+      isStandaloneOfferLoading: false,
+      nearPlaces: [makeMockOffer()],
+      offers:[makeMockOffer()],
+      requestedOffer: makeMockStandaloneOffer(),
+      reviews: [makeMockReview()]
+    },
+    USER: {
+      authorizationStatus: AuthorizationStatus.NoAuth,
+      isUserProcessing: false,
+      user: makeMockUser()
+    },
+    ...initialState ?? {}
+  };
+}
+
 export {
   extractActionsTypes,
   makeMockOffer,
   makeMockReview,
   makeMockStandaloneOffer,
-  makeMockUser
+  makeMockUser,
+  makeMockStore
 };

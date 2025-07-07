@@ -37,6 +37,7 @@ function FavoritesScreen() {
               'favorites',
               {'favorites--empty': !sortedOffers.length}
             )}
+            data-testid='favorites'
           >
             <h1 className={sortedOffers.length ? 'favorites__title' : 'visually-hidden'}>
               {sortedOffers.length ? 'Saved listing' : 'Favorites (empty)'}
