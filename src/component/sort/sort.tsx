@@ -36,6 +36,7 @@ function Sort({sorting, onSortingChange}: SortProps): JSX.Element {
         onClick={() => {
           setIsOpened(!isOpened);
         }}
+        data-testid={sorting}
       >
         Popular
         <svg className='places__sorting-arrow' width='7' height='4'>
@@ -47,6 +48,7 @@ function Sort({sorting, onSortingChange}: SortProps): JSX.Element {
           'places__options  places__options--custom',
           {'places__options--opened': isOpened}
         )}
+        data-testid='sorting-types-list'
       >
         {Object.values(Sorting).map((sortingType) => (
           <li
@@ -64,6 +66,7 @@ function Sort({sorting, onSortingChange}: SortProps): JSX.Element {
               onSortingChange(sortingType);
               setIsOpened(!isOpened);
             }}
+            data-testid={sortingType === sorting ? 'active-sorting' : 'sorting'}
           >
             {sortingType}
           </li>

@@ -24,6 +24,7 @@ function LocationTab({city}: LocationTabProps): JSX.Element {
           'locations__item-link  tabs__item',
           {'tabs__item--active': city === activeCity}
         )}
+        data-testid='location-link'
       >
         <span>{city}</span>
       </a>

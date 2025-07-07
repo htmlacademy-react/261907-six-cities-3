@@ -41,8 +41,9 @@ function BookmarkButton({className, isFavorite, id}: BookmarkButtonProps): JSX.E
       type='button'
       onClick={handleFavoriteClick}
       disabled={isFavoriteProcessing}
+      data-testid='bookmark-button'
     >
-      <svg className={`${className}__bookmark-icon`} width={className === BookMarkButtonClass.Offer ? '31' : '18'} height={className === BookMarkButtonClass.Offer ? '33' : '19'}>
+      <svg className={`${className}__bookmark-icon`} width={className === BookMarkButtonClass.Offer ? '31' : '18'} height={className === BookMarkButtonClass.Offer ? '33' : '19'} data-testid='bookmark-icon'>
         <use xlinkHref='#icon-bookmark'></use>
       </svg>
       <span className='visually-hidden'>{isFavorite ? 'In' : 'To'} bookmarks</span>
