@@ -311,10 +311,11 @@ describe('App Data Slice', () => {
     expect(result).toEqual(expectedState);
   });
 
-  it('should set isStandaloneOfferLoading to false with requestStandaloneOfferAction.rejected', () => {
+  it('should set isStandaloneOfferLoading to false and isOfferNotFound to true with requestStandaloneOfferAction.rejected', () => {
     const expectedState = {
       ...state,
-      isStandaloneOfferLoading: false
+      isStandaloneOfferLoading: false,
+      isOfferNotFound: true
     };
 
     const result = appData.reducer(state, requestStandaloneOfferAction.rejected);

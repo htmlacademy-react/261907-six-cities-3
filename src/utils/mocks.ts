@@ -1,12 +1,22 @@
+import {Action} from 'redux';
+import {ThunkDispatch} from 'redux-thunk';
 import {address, datatype, date, internet, lorem, name} from 'faker';
 import {CITIES} from '../const';
 import {Offer, StandaloneOffer} from '../types/offer';
 import {Review} from '../types/review';
 import {UserData} from '../types/user';
+import {State} from '../types/state';
+import {createApi} from '../services/api';
 
 type MockApartmentType = ['apartment', 'hotel', 'house', 'room'];
 
+export type AppThunkDispatch = ThunkDispatch<State, ReturnType<typeof createApi>, Action>;
+
 const apartmentTypes: MockApartmentType = ['apartment', 'hotel', 'house', 'room'];
+
+function extractActionsTypes(actions: Action<string>[]): string[] {
+  return actions.map(({type}) => type);
+}
 
 function makeMockOffer(): Offer {
   return {
@@ -81,6 +91,7 @@ function makeMockUser(): UserData {
 }
 
 export {
+  extractActionsTypes,
   makeMockOffer,
   makeMockReview,
   makeMockStandaloneOffer,
