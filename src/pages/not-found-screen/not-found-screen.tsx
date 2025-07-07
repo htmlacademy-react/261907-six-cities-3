@@ -17,7 +17,7 @@ function NotFoundScreen(): JSX.Element {
         <div className='page__login-container  container'>
           <section className='login'>
             <h1 className='login__title'>The Page Isn’t Found</h1>
-            <p>
+            <p data-testid='main-page-suggest'>
               Please, go to the&nbsp;
               <Link to={AppRoute.Main}>main page</Link>
               .

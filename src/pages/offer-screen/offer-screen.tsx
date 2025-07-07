@@ -3,7 +3,7 @@ import {useParams} from 'react-router-dom';
 import {Helmet} from 'react-helmet-async';
 import cn from 'classnames';
 import {AuthorizationStatus, BookMarkButtonClass, CardClass, MapClass} from '../../const';
-import {capitalize} from '../../utils';
+import {capitalize} from '../../utils/utils';
 import {useAppDispatch, useAppSelector} from '../../hooks';
 import {getNearPlaces, getNearPlacesLoadingStatus, getOfferErrorStatus, getReviews, getReviewsLoadingStatus, getStandaloneOffer, getStandaloneOfferLoadingStatus} from '../../store/app-data/app-data.selectors';
 import {getAuthorizationStatus} from '../../store/user-process/user-process.selectors';

@@ -3,8 +3,9 @@ import {useNavigate} from 'react-router-dom';
 import cn from 'classnames';
 import {AppRoute, AuthorizationStatus, BookMarkButtonClass} from '../../const';
 import {useAppDispatch, useAppSelector} from '../../hooks';
-import {getAuthorizationStatus} from '../../store/user-process/user-process.selectors';
 import {changeFavoriteStatusAction} from '../../store/api-action';
+import {getAuthorizationStatus} from '../../store/user-process/user-process.selectors';
+import {getFavoriteProcessingStatus} from '../../store/app-data/app-data.selectors';
 
 type BookmarkButtonProps = {
   className: BookMarkButtonClass;
@@ -14,6 +15,7 @@ type BookmarkButtonProps = {
 
 function BookmarkButton({className, isFavorite, id}: BookmarkButtonProps): JSX.Element {
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
+  const isFavoriteProcessing = useAppSelector(getFavoriteProcessingStatus);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
@@ -38,6 +40,7 @@ function BookmarkButton({className, isFavorite, id}: BookmarkButtonProps): JSX.E
       )}
       type='button'
       onClick={handleFavoriteClick}
+      disabled={isFavoriteProcessing}
     >
       <svg className={`${className}__bookmark-icon`} width={className === BookMarkButtonClass.Offer ? '31' : '18'} height={className === BookMarkButtonClass.Offer ? '33' : '19'}>
         <use xlinkHref='#icon-bookmark'></use>

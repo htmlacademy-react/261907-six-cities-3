@@ -1,7 +1,7 @@
 import {Link} from 'react-router-dom';
 import cn from 'classnames';
 import {AppRoute, BookMarkButtonClass, CardClass} from '../../const';
-import {capitalize} from '../../utils';
+import {capitalize} from '../../utils/utils';
 import {Offer} from '../../types/offer';
 import BookmarkButton from '../bookmark-button/bookmark-button';
 

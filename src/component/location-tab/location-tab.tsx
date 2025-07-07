@@ -17,6 +17,7 @@ function LocationTab({city}: LocationTabProps): JSX.Element {
       onClick={() => {
         dispatch(changeCityAction(city));
       }}
+      data-testid='location-tab'
     >
       <a
         className={cn(

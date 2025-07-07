@@ -3,43 +3,53 @@ import {State} from '../../types/state';
 import {Offer, StandaloneOffer} from '../../types/offer';
 import {Review} from '../../types/review';
 
-function getNearPlaces(state: State): Offer[] {
+function getCommentProcessingStatus(state: Pick<State, NameSpace.Data>): boolean {
+  return state[NameSpace.Data].isCommentProcessing;
+}
+
+function getFavoriteProcessingStatus(state: Pick<State, NameSpace.Data>): boolean {
+  return state[NameSpace.Data].isFavoriteProcessing;
+}
+
+function getNearPlaces(state: Pick<State, NameSpace.Data>): Offer[] {
   return state[NameSpace.Data].nearPlaces;
 }
 
-function getNearPlacesLoadingStatus(state: State): boolean {
+function getNearPlacesLoadingStatus(state: Pick<State, NameSpace.Data>): boolean {
   return state[NameSpace.Data].isNearPlacesLoading;
 }
 
-function getOfferErrorStatus(state: State): boolean {
+function getOfferErrorStatus(state: Pick<State, NameSpace.Data>): boolean {
   return state[NameSpace.Data].isOfferNotFound;
 }
 
-function getOffers(state: State): Offer[] {
+function getOffers(state: Pick<State, NameSpace.Data>): Offer[] {
   return state[NameSpace.Data].offers;
 }
 
-function getOffersLoadingStatus(state: State): boolean {
+function getOffersLoadingStatus(state: Pick<State, NameSpace.Data>): boolean {
   return state[NameSpace.Data].isOffersLoading;
 }
 
-function getReviews(state: State): Review[] {
+function getReviews(state: Pick<State, NameSpace.Data>): Review[] {
   return state[NameSpace.Data].reviews;
 }
 
-function getReviewsLoadingStatus(state: State): boolean {
+function getReviewsLoadingStatus(state: Pick<State, NameSpace.Data>): boolean {
   return state[NameSpace.Data].isReviewsLoading;
 }
 
-function getStandaloneOffer(state: State): StandaloneOffer | null {
+function getStandaloneOffer(state: Pick<State, NameSpace.Data>): StandaloneOffer | null {
   return state[NameSpace.Data].requestedOffer;
 }
 
-function getStandaloneOfferLoadingStatus(state: State): boolean {
+function getStandaloneOfferLoadingStatus(state: Pick<State, NameSpace.Data>): boolean {
   return state[NameSpace.Data].isStandaloneOfferLoading;
 }
 
 export {
+  getCommentProcessingStatus,
+  getFavoriteProcessingStatus,
   getNearPlaces,
   getNearPlacesLoadingStatus,
   getOfferErrorStatus,

@@ -18,6 +18,9 @@ export type InitialState = {
   isNearPlacesLoading: boolean;
   nearPlaces: Offer[];
   isOfferNotFound: boolean;
+  isFavoriteProcessing: boolean;
+  isCommentProcessing: boolean;
+  isUserProcessing: boolean;
 };
 
 export type State = ReturnType<typeof store.getState>;

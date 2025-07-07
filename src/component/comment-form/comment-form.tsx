@@ -1,11 +1,13 @@
 import React, {ChangeEvent, FormEvent, useState} from 'react';
 import {useParams} from 'react-router-dom';
 import {MIN_COMMENT_LENGTH, Rating} from '../../const';
-import {useAppDispatch} from '../../hooks';
+import {useAppDispatch, useAppSelector} from '../../hooks';
 import {sendCommentAction} from '../../store/api-action';
+import {getCommentProcessingStatus} from '../../store/app-data/app-data.selectors';
 
 function CommentForm(): JSX.Element {
   const params = useParams();
+  const isCommentProcessing = useAppSelector(getCommentProcessingStatus);
   const dispatch = useAppDispatch();
 
   const [formData, setFormData] = useState({
@@ -87,7 +89,7 @@ function CommentForm(): JSX.Element {
         <p className='reviews__help'>
           To submit review please make sure to set <span className='reviews__star'>rating</span> and describe your stay with at least <b className='reviews__text-amount'>{MIN_COMMENT_LENGTH} characters</b>.
         </p>
-        <button className='reviews__submit  form__submit button' type='submit' disabled={!formData.rating || formData.comment.length < MIN_COMMENT_LENGTH}>Submit</button>
+        <button className='reviews__submit  form__submit button' type='submit' disabled={!formData.rating || formData.comment.length < MIN_COMMENT_LENGTH || isCommentProcessing}>Submit</button>
       </div>
     </form>
   );
