@@ -4,7 +4,9 @@ import {InitialState} from '../../types/state';
 import {changeFavoriteStatusAction, getFavoritesAction, getOffersAction, logoutAction, requestNearPlacesAction, requestReviewsForOfferAction, requestStandaloneOfferAction, sendCommentAction} from '../api-action';
 import {checkFavorites, clearFavorites, findOffersAndChangeFavoriteStatus} from '../../utils/offers';
 
-const initialState: Pick<InitialState, 'isNearPlacesLoading' | 'isOffersLoading' | 'isOfferNotFound' | 'isReviewsLoading' | 'isStandaloneOfferLoading' | 'nearPlaces' |'offers' | 'requestedOffer' |'reviews'> = {
+const initialState: Pick<InitialState, 'isCommentProcessing' | 'isFavoriteProcessing' | 'isNearPlacesLoading' | 'isOffersLoading' | 'isOfferNotFound' | 'isReviewsLoading' | 'isStandaloneOfferLoading' | 'nearPlaces' |'offers' | 'requestedOffer' |'reviews'> = {
+  isCommentProcessing: false,
+  isFavoriteProcessing: false,
   isNearPlacesLoading: false,
   isOffersLoading: false,
   isOfferNotFound: false,
@@ -22,14 +24,21 @@ const appData = createSlice({
   reducers: {},
   extraReducers(builder) {
     builder
+      .addCase(changeFavoriteStatusAction.pending, (state) => {
+        state.isFavoriteProcessing = true;
+      })
       .addCase(changeFavoriteStatusAction.fulfilled, (state, action) => {
+        state.isFavoriteProcessing = false;
         state.offers = findOffersAndChangeFavoriteStatus(state.offers, action.payload);
 
         if (state.requestedOffer && state.requestedOffer.id === action.payload.id) {
           state.requestedOffer.isFavorite = action.payload.isFavorite;
-        } else if (state.nearPlaces) {
+        } else if (state.nearPlaces.length) {
           state.nearPlaces = findOffersAndChangeFavoriteStatus(state.nearPlaces, action.payload);
         }
+      })
+      .addCase(changeFavoriteStatusAction.rejected, (state) => {
+        state.isFavoriteProcessing = false;
       })
       .addCase(getFavoritesAction.fulfilled, (state, action) => {
         state.offers = checkFavorites(state.offers, action.payload);
@@ -47,6 +56,14 @@ const appData = createSlice({
       })
       .addCase(logoutAction.fulfilled, (state) => {
         state.offers = clearFavorites(state.offers);
+
+        if (state.requestedOffer) {
+          state.requestedOffer.isFavorite = false;
+        }
+
+        if (state.nearPlaces.length) {
+          state.nearPlaces = clearFavorites(state.nearPlaces);
+        }
       })
       .addCase(requestNearPlacesAction.pending, (state) => {
         state.isNearPlacesLoading = true;
@@ -83,8 +100,15 @@ const appData = createSlice({
         state.isStandaloneOfferLoading = false;
         state.isOfferNotFound = true;
       })
+      .addCase(sendCommentAction.pending, (state) => {
+        state.isCommentProcessing = true;
+      })
       .addCase(sendCommentAction.fulfilled, (state, action) => {
+        state.isCommentProcessing = false;
         state.reviews = [...state.reviews, action.payload];
+      })
+      .addCase(sendCommentAction.rejected, (state) => {
+        state.isCommentProcessing = false;
       });
   },
 });

@@ -1,6 +1,7 @@
+import {datatype} from 'faker';
 import {AuthorizationStatus, NameSpace} from '../../const';
 import {makeMockUser} from '../../utils/mocks';
-import {getAuthorizationStatus, getUser} from './user-process.selectors';
+import {getAuthorizationStatus, getUser, getUserProcessing} from './user-process.selectors';
 
 describe('User Process Selectors', () => {
   const mockUser = makeMockUser();
@@ -8,6 +9,7 @@ describe('User Process Selectors', () => {
   const state = {
     [NameSpace.User]: {
       authorizationStatus: AuthorizationStatus.Auth,
+      isUserProcessing: datatype.boolean(),
       user: mockUser
     }
   };
@@ -24,5 +26,12 @@ describe('User Process Selectors', () => {
     const result = getUser(state);
 
     expect(result).toEqual(user);
+  });
+
+  it('should return user processing status from state', () => {
+    const {isUserProcessing} = state[NameSpace.User];
+    const result = getUserProcessing(state);
+
+    expect(result).toBe(isUserProcessing);
   });
 });

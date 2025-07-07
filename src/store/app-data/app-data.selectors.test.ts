@@ -3,26 +3,42 @@ import {NameSpace} from '../../const';
 import {Offer, StandaloneOffer} from '../../types/offer';
 import {Review} from '../../types/review';
 import {makeMockOffer, makeMockReview, makeMockStandaloneOffer} from '../../utils/mocks';
-import {getNearPlaces, getNearPlacesLoadingStatus, getOfferErrorStatus, getOffers, getOffersLoadingStatus, getReviews, getReviewsLoadingStatus, getStandaloneOffer, getStandaloneOfferLoadingStatus} from './app-data.selectors';
+import {getCommentProcessingStatus, getFavoriteProcessingStatus, getNearPlaces, getNearPlacesLoadingStatus, getOfferErrorStatus, getOffers, getOffersLoadingStatus, getReviews, getReviewsLoadingStatus, getStandaloneOffer, getStandaloneOfferLoadingStatus} from './app-data.selectors';
 
 describe('App Data Selectors', () => {
-  const mockOffers: Offer[] = [makeMockOffer()];
-  const mockReviews: Review[] = [makeMockReview()];
+  const mockOffer: Offer = makeMockOffer();
+  const mockReview: Review = makeMockReview();
   const mockStandaloneOffer: StandaloneOffer = makeMockStandaloneOffer();
 
   const state = {
     [NameSpace.Data]: {
+      isCommentProcessing: datatype.boolean(),
+      isFavoriteProcessing: datatype.boolean(),
       isNearPlacesLoading: datatype.boolean(),
       isOffersLoading: datatype.boolean(),
       isOfferNotFound: datatype.boolean(),
       isReviewsLoading: datatype.boolean(),
       isStandaloneOfferLoading: datatype.boolean(),
-      nearPlaces: mockOffers,
-      offers: mockOffers,
+      nearPlaces: [mockOffer],
+      offers: [mockOffer],
       requestedOffer: mockStandaloneOffer,
-      reviews: mockReviews
+      reviews: [mockReview]
     }
   };
+
+  it('should return comment processing status', () => {
+    const {isCommentProcessing} = state[NameSpace.Data];
+    const result = getCommentProcessingStatus(state);
+
+    expect(result).toBe(isCommentProcessing);
+  });
+
+  it('should return favorite processing status', () => {
+    const {isFavoriteProcessing} = state[NameSpace.Data];
+    const result = getFavoriteProcessingStatus(state);
+
+    expect(result).toBe(isFavoriteProcessing);
+  });
 
   it('should return near places from state', () => {
     const {nearPlaces} = state[NameSpace.Data];

@@ -3,6 +3,14 @@ import {State} from '../../types/state';
 import {Offer, StandaloneOffer} from '../../types/offer';
 import {Review} from '../../types/review';
 
+function getCommentProcessingStatus(state: Pick<State, NameSpace.Data>): boolean {
+  return state[NameSpace.Data].isCommentProcessing;
+}
+
+function getFavoriteProcessingStatus(state: Pick<State, NameSpace.Data>): boolean {
+  return state[NameSpace.Data].isFavoriteProcessing;
+}
+
 function getNearPlaces(state: Pick<State, NameSpace.Data>): Offer[] {
   return state[NameSpace.Data].nearPlaces;
 }
@@ -40,6 +48,8 @@ function getStandaloneOfferLoadingStatus(state: Pick<State, NameSpace.Data>): bo
 }
 
 export {
+  getCommentProcessingStatus,
+  getFavoriteProcessingStatus,
   getNearPlaces,
   getNearPlacesLoadingStatus,
   getOfferErrorStatus,
