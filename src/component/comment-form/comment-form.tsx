@@ -58,6 +58,7 @@ function CommentForm(): JSX.Element {
                     rating
                   });
                 }}
+                data-testid={`${rating}-stars-fields`}
               />
               <label
                 className='reviews__rating-label  form__rating-label'
@@ -84,6 +85,7 @@ function CommentForm(): JSX.Element {
             comment: target.value
           });
         }}
+        data-testid='comment-field'
       />
       <div className='reviews__button-wrapper'>
         <p className='reviews__help'>

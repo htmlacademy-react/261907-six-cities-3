@@ -8,7 +8,6 @@ type FavoriteLocationProps = {
 };
 
 function FavoriteLocation({location}: FavoriteLocationProps) {
-
   return (
     <li className='favorites__locations-items'>
       <div className='favorites__locations  locations  locations--current'>
@@ -16,7 +15,7 @@ function FavoriteLocation({location}: FavoriteLocationProps) {
           <LinkToCity city={location.name} />
         </div>
       </div>
-      <div className='favorites__places'>
+      <div className='favorites__places' data-testid='favorites-places'>
         {location.offers.map((offer) => <OfferCard key={offer.id} offer={offer} className={CardClass.Favorites} />)}
       </div>
     </li>

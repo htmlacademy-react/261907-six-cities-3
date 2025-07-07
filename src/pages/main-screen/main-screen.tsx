@@ -7,7 +7,7 @@ import {useAppSelector} from '../../hooks';
 import {getOffers} from '../../store/app-data/app-data.selectors';
 import {getCity} from '../../store/app-process/app-process.selectors';
 import Header from '../../component/header/header';
-import LocationsList from '../../component/locations-list/location-list';
+import LocationsList from '../../component/locations-list/locations-list';
 import CityEmpty from '../../component/city-empty/city-empty';
 import Map from '../../component/map/map';
 import CityOffers from '../../component/city-offers/city-offers';

@@ -18,6 +18,7 @@ function OfferCard({offer, className, onOfferEnter, onOfferLeave}: OfferCardProp
       className={`${className}__card  place-card`}
       onMouseEnter={onOfferEnter}
       onMouseLeave={onOfferLeave}
+      data-testid='offer-card'
     >
       {offer.isPremium && <div className='place-card__mark'><span>Premium</span></div>}
       <div className={`${className}__image-wrapper  place-card__image-wrapper`}>

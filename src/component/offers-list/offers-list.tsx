@@ -20,6 +20,7 @@ function OffersList({className, offers, onOfferEnter, onOfferLeave}: OffersListP
           [`${className}__list`]: className === CardClass.NearPlaces
         }
       )}
+      data-testid='offers-list'
     >
       {offers.map((offer: Offer) => (
         <OfferCard
