@@ -2,7 +2,7 @@ import {render, screen} from '@testing-library/react';
 import ReviewCard from './review-card';
 import {makeMockReview} from '../../utils/mocks';
 
-describe('Component: Review Card', () => {
+describe('Component: ReviewCard', () => {
   it('should render correctly', () => {
     const mockReview = makeMockReview();
 
