@@ -22,7 +22,7 @@ describe('App Routing', () => {
     mockHistory.push(AppRoute.Main);
     render(withStoreComponent);
 
-    expect(screen.getByText(/places to stay/i)).toBeInTheDocument();
+    expect(screen.getByText('Cities')).toBeInTheDocument();
     expect(screen.getAllByTestId(cityTestId).length).toBe(expectedCitiesCount);
   });
 

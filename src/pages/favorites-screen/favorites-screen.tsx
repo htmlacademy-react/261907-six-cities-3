@@ -1,17 +1,30 @@
+import {useEffect} from 'react';
 import {Link} from 'react-router-dom';
 import {Helmet} from 'react-helmet-async';
 import cn from 'classnames';
 import {AppRoute} from '../../const';
-import {Offer} from '../../types/offer';
-import {findFavorites, sortOffersByLocation} from '../../utils/offers';
-import {useAppSelector} from '../../hooks';
-import {getOffers} from '../../store/app-data/app-data.selectors';
+import {sortOffersByLocation} from '../../utils/offers';
+import {useAppDispatch, useAppSelector} from '../../hooks';
+import {getFavoritesAction} from '../../store/api-action';
+import {getFavoritesLoadingStatus, getFavorites} from '../../store/app-data/app-data.selectors';
 import Header from '../../component/header/header';
 import FavoriteLocation from '../../component/favorite-location/favorite-location';
+import LoadingScreen from '../loading-screen/loading-screen';
+
 
 function FavoritesScreen() {
-  const offers: Offer[] = useAppSelector(getOffers);
-  const favoriteOffers: Offer[] = findFavorites(offers);
+  const isFavoritesLoading = useAppSelector(getFavoritesLoadingStatus);
+  const favoriteOffers = useAppSelector(getFavorites);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(getFavoritesAction());
+  }, [dispatch]);
+
+  if (isFavoritesLoading) {
+    return <LoadingScreen />;
+  }
+
   const sortedOffers = sortOffersByLocation(favoriteOffers);
 
   return (
@@ -40,7 +53,7 @@ function FavoritesScreen() {
             data-testid='favorites'
           >
             <h1 className={sortedOffers.length ? 'favorites__title' : 'visually-hidden'}>
-              {sortedOffers.length ? 'Saved listing' : 'Favorites (empty)'}
+              {sortedOffers.length ? `Saved listing · ${favoriteOffers.length}` : 'Favorites (empty)'}
             </h1>
             {sortedOffers.length
               ? (

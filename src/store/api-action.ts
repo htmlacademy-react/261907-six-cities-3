@@ -3,7 +3,7 @@ import {AxiosInstance} from 'axios';
 import {ApiRoute, AppRoute} from '../const';
 import {AppDispatch, State} from '../types/state';
 import {AuthorizationData, UserData} from '../types/user';
-import {FavoriteData, Offer, StandaloneOffer} from '../types/offer';
+import {FavoriteData, FavoriteOffer, Offer, StandaloneOffer} from '../types/offer';
 import {CommentOptions, Review} from '../types/review';
 import {redirectToRouteAction} from './action';
 import {dropToken, saveToken} from '../services/token';
@@ -14,10 +14,10 @@ type ThunkOptions = {
   extra: AxiosInstance;
 };
 
-const changeFavoriteStatusAction = createAsyncThunk<Offer, FavoriteData, ThunkOptions>(
+const changeFavoriteStatusAction = createAsyncThunk<FavoriteOffer, FavoriteData, ThunkOptions>(
   'data/changeFavoriteStatus',
   async ({id, status}, {extra: api}) => {
-    const {data} = await api.post<Offer>(`${ApiRoute.Favorite}/${id}/${status}`);
+    const {data} = await api.post<FavoriteOffer>(`${ApiRoute.Favorite}/${id}/${status}`);
 
     return data;
   }

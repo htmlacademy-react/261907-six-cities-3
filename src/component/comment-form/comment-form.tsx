@@ -27,11 +27,7 @@ function CommentForm(): JSX.Element {
         }
       }));
 
-      setFormData({
-        ...formData,
-        rating: 0,
-        comment: ''
-      });
+      console.log(error);
     }
   };
 

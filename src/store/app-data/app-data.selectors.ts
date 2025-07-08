@@ -11,6 +11,14 @@ function getFavoriteProcessingStatus(state: Pick<State, NameSpace.Data>): boolea
   return state[NameSpace.Data].isFavoriteProcessing;
 }
 
+function getFavorites(state: Pick<State, NameSpace.Data>): Offer[] {
+  return state[NameSpace.Data].favorites;
+}
+
+function getFavoritesLoadingStatus(state: Pick<State, NameSpace.Data>): boolean {
+  return state[NameSpace.Data].isFavoritesLoading;
+}
+
 function getNearPlaces(state: Pick<State, NameSpace.Data>): Offer[] {
   return state[NameSpace.Data].nearPlaces;
 }
@@ -50,6 +58,8 @@ function getStandaloneOfferLoadingStatus(state: Pick<State, NameSpace.Data>): bo
 export {
   getCommentProcessingStatus,
   getFavoriteProcessingStatus,
+  getFavorites,
+  getFavoritesLoadingStatus,
   getNearPlaces,
   getNearPlacesLoadingStatus,
   getOfferErrorStatus,

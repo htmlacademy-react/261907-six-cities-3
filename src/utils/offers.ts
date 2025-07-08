@@ -1,5 +1,5 @@
 import {Sorting} from '../const';
-import {Offer, LocationWithOffers, OfferLocationInfo, StandaloneOffer} from '../types/offer';
+import {Offer, LocationWithOffers, OfferLocationInfo, StandaloneOffer, FavoriteOffer} from '../types/offer';
 
 function checkFavorites(offers: Offer[], favorites: Offer[]): Offer[] {
   const favoritesIds = favorites.map((offer: Offer) => offer.id);
@@ -17,6 +17,23 @@ function extractInfoForMap(offer: Offer | StandaloneOffer): OfferLocationInfo {
     city: offer.city,
     location: offer.location
   };
+}
+
+function extractOfferFromFavorite(favorite: FavoriteOffer): Offer {
+  const offer = {
+    id: favorite.id,
+    title: favorite.title,
+    type: favorite.type,
+    price: favorite.price,
+    city: favorite.city,
+    location: favorite.location,
+    isFavorite: favorite.isFavorite,
+    isPremium: favorite.isPremium,
+    rating: favorite.rating,
+    previewImage: favorite.previewImage
+  };
+
+  return offer;
 }
 
 function findFavorites(offers: Offer[]): Offer[] {
@@ -64,6 +81,13 @@ function sortRating(offerA: Offer, offerB: Offer): number {
   return offerB.rating - offerA.rating;
 }
 
+function updateFavorites(favorites: Offer[], offerToUpdate: FavoriteOffer): Offer[] {
+  const offer = extractOfferFromFavorite(offerToUpdate);
+  const isInFavorites = favorites.some((favorite) => favorite.id === offer.id);
+
+  return isInFavorites ? favorites.filter((favorite) => favorite.id !== offer.id) : [...favorites, offer];
+}
+
 function updateOffersToRender(offers: Offer[], city: string, sorting: Sorting): Offer[] {
   const requiredOffers = offers.filter((offer: Offer) => offer.city.name === city);
 
@@ -83,8 +107,10 @@ export {
   checkFavorites,
   clearFavorites,
   extractInfoForMap,
+  extractOfferFromFavorite,
   findFavorites,
   findOffersAndChangeFavoriteStatus,
   sortOffersByLocation,
+  updateFavorites,
   updateOffersToRender
 };

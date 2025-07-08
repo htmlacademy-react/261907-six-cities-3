@@ -2,7 +2,7 @@ import {Action} from 'redux';
 import {ThunkDispatch} from 'redux-thunk';
 import {address, datatype, date, internet, lorem, name} from 'faker';
 import {CITIES, AuthorizationStatus} from '../const';
-import {Offer, StandaloneOffer} from '../types/offer';
+import {FavoriteOffer, Offer, StandaloneOffer} from '../types/offer';
 import {Review} from '../types/review';
 import {UserData} from '../types/user';
 import {State} from '../types/state';
@@ -80,6 +80,13 @@ function makeMockStandaloneOffer(): StandaloneOffer {
   };
 }
 
+function makeMockFavorite(): FavoriteOffer {
+  return {
+    ...makeMockStandaloneOffer(),
+    previewImage: internet.url()
+  };
+}
+
 function makeMockUser(): UserData {
   return {
     email: internet.email(),
@@ -96,8 +103,10 @@ function makeMockStore(initialState?: Partial<State>): State {
       city: CITIES[datatype.number(5)]
     },
     DATA: {
+      favorites: [makeMockOffer()],
       isCommentProcessing: false,
       isFavoriteProcessing: false,
+      isFavoritesLoading: false,
       isNearPlacesLoading: false,
       isOffersLoading: false,
       isOfferNotFound: false,
@@ -119,6 +128,7 @@ function makeMockStore(initialState?: Partial<State>): State {
 
 export {
   extractActionsTypes,
+  makeMockFavorite,
   makeMockOffer,
   makeMockReview,
   makeMockStandaloneOffer,

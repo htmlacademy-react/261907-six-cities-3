@@ -50,3 +50,5 @@ export type StandaloneOffer = Omit<Offer, 'previewImage'> & {
 };
 
 export type OfferLocationInfo = Pick<Offer, 'id' | 'city' | 'location'>;
+
+export type FavoriteOffer = Offer & StandaloneOffer;

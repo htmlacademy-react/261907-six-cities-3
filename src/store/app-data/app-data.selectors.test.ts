@@ -3,7 +3,7 @@ import {NameSpace} from '../../const';
 import {Offer, StandaloneOffer} from '../../types/offer';
 import {Review} from '../../types/review';
 import {makeMockOffer, makeMockReview, makeMockStandaloneOffer} from '../../utils/mocks';
-import {getCommentProcessingStatus, getFavoriteProcessingStatus, getNearPlaces, getNearPlacesLoadingStatus, getOfferErrorStatus, getOffers, getOffersLoadingStatus, getReviews, getReviewsLoadingStatus, getStandaloneOffer, getStandaloneOfferLoadingStatus} from './app-data.selectors';
+import {getCommentProcessingStatus, getFavoriteProcessingStatus, getFavoritesLoadingStatus, getNearPlaces, getNearPlacesLoadingStatus, getOfferErrorStatus, getOffers, getOffersLoadingStatus, getReviews, getReviewsLoadingStatus, getStandaloneOffer, getStandaloneOfferLoadingStatus} from './app-data.selectors';
 
 describe('App Data Selectors', () => {
   const mockOffer: Offer = makeMockOffer();
@@ -12,8 +12,10 @@ describe('App Data Selectors', () => {
 
   const state = {
     [NameSpace.Data]: {
+      favorites: [mockOffer],
       isCommentProcessing: datatype.boolean(),
       isFavoriteProcessing: datatype.boolean(),
+      isFavoritesLoading: datatype.boolean(),
       isNearPlacesLoading: datatype.boolean(),
       isOffersLoading: datatype.boolean(),
       isOfferNotFound: datatype.boolean(),
@@ -38,6 +40,20 @@ describe('App Data Selectors', () => {
     const result = getFavoriteProcessingStatus(state);
 
     expect(result).toBe(isFavoriteProcessing);
+  });
+
+  it('should return favorites from state', () => {
+    const {favorites} = state[NameSpace.Data];
+    const result = getNearPlaces(state);
+
+    expect(result).toEqual(favorites);
+  });
+
+  it('should return favorites loading status from state', () => {
+    const {isFavoritesLoading} = state[NameSpace.Data];
+    const result = getFavoritesLoadingStatus(state);
+
+    expect(result).toEqual(isFavoritesLoading);
   });
 
   it('should return near places from state', () => {

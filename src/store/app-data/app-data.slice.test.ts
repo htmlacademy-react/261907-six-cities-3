@@ -1,9 +1,10 @@
 import {datatype} from 'faker';
 import {Offer, StandaloneOffer} from '../../types/offer';
 import {Review} from '../../types/review';
-import {makeMockOffer, makeMockReview, makeMockStandaloneOffer} from '../../utils/mocks';
+import {makeMockFavorite, makeMockOffer, makeMockReview, makeMockStandaloneOffer} from '../../utils/mocks';
 import {appData} from './app-data.slice';
 import {changeFavoriteStatusAction, getFavoritesAction, getOffersAction, logoutAction, requestNearPlacesAction, requestReviewsForOfferAction, requestStandaloneOfferAction, sendCommentAction} from '../api-action';
+import { extractOfferFromFavorite } from '../../utils/offers';
 
 describe('App Data Slice', () => {
   const emptyAction = {type: ''};
@@ -12,7 +13,9 @@ describe('App Data Slice', () => {
   const mockStandaloneOffer: StandaloneOffer = makeMockStandaloneOffer();
 
   const state = {
+    favorites: [mockOffer],
     isCommentProcessing: datatype.boolean(),
+    isFavoritesLoading: datatype.boolean(),
     isFavoriteProcessing: datatype.boolean(),
     isNearPlacesLoading: datatype.boolean(),
     isOffersLoading: datatype.boolean(),
@@ -33,8 +36,10 @@ describe('App Data Slice', () => {
 
   it('should return default initial state with empty action and undefined state', () => {
     const initialState = {
+      favorites: [],
       isCommentProcessing: false,
       isFavoriteProcessing: false,
+      isFavoritesLoading: false,
       isNearPlacesLoading: false,
       isOffersLoading: false,
       isOfferNotFound: false,
@@ -62,21 +67,18 @@ describe('App Data Slice', () => {
     expect(result).toEqual(expectedState);
   });
 
-  it('should set isFavoriteProcessing to false, isFavorite on offer with changeFavoriteStatusAction.fulfilled', () => {
-    const updatedOffer = {
-      ...mockOffer,
-      isFavorite: !mockOffer.isFavorite
-    };
+  it('should set isFavoriteProcessing to false, updateFavorites with changeFavoriteStatusAction.fulfilled', () => {
+    const mockFavorite = makeMockFavorite();
+    const offerToAdd = extractOfferFromFavorite(mockFavorite);
 
     const expectedState = {
       ...state,
-      offers: [updatedOffer],
-      nearPlaces: [updatedOffer],
+      favorites: [mockOffer, offerToAdd],
       isFavoriteProcessing: false
     };
 
     const result = appData.reducer(state, changeFavoriteStatusAction.fulfilled(
-      updatedOffer,
+      mockFavorite,
       '',
       {
         id: mockOffer.id,
@@ -106,7 +108,9 @@ describe('App Data Slice', () => {
 
     const expectedState = {
       ...state,
-      offers: [updatedOffer]
+      favorites: [updatedOffer],
+      offers: [updatedOffer],
+      isFavoritesLoading: false
     };
 
     const result = appData.reducer(state, getFavoritesAction.fulfilled(
