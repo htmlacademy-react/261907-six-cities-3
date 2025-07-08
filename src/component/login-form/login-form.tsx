@@ -1,6 +1,5 @@
 import {ChangeEvent, FormEvent, useState} from 'react';
-import {EMAIL_CHECKING_REGEXP} from '../../const';
-import {isPasswordValid} from '../../utils/utils';
+import {isLoginFormReady} from '../../utils/offers';
 import {useAppDispatch, useAppSelector} from '../../hooks';
 import {loginAction} from '../../store/api-action';
 import {getUserProcessing} from '../../store/user-process/user-process.selectors';
@@ -26,7 +25,7 @@ function LoginForm(): JSX.Element {
   const handleFormSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
 
-    if (formData.email && formData.password) {
+    if (isLoginFormReady(formData, isUserProcessing)) {
       dispatch(loginAction({
         email: formData.email,
         password: formData.password
@@ -44,7 +43,7 @@ function LoginForm(): JSX.Element {
         <label className='visually-hidden' htmlFor='password'>Password</label>
         <input className='login__input  form__input' id='password' type='password' name='password' placeholder='Password' value={formData.password} onChange={handleFieldChange} data-testid='password-field' required />
       </div>
-      <button className='login__submit  form__submit  button' type='submit' disabled={!(formData.email && EMAIL_CHECKING_REGEXP.test(formData.email) && formData.password && isPasswordValid(formData.password) && !isUserProcessing)}>Sign in</button>
+      <button className='login__submit  form__submit  button' type='submit' disabled={!isLoginFormReady(formData, isUserProcessing)}>Sign in</button>
     </form>
   );
 }

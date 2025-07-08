@@ -110,7 +110,7 @@ function makeMockStore(initialState?: Partial<State>): State {
       isFavoritesLoading: false,
       isNearPlacesLoading: false,
       isOffersLoading: false,
-      isOfferNotFound: false,
+      isNotFoundError: false,
       isReviewsLoading: false,
       isStandaloneOfferLoading: false,
       nearPlaces: [makeMockOffer()],

@@ -1,6 +1,7 @@
 import React, {ChangeEvent, FormEvent, useEffect, useState} from 'react';
 import {useParams} from 'react-router-dom';
-import {MAX_COMMENT_LENGTH, MIN_COMMENT_LENGTH, Rating} from '../../const';
+import {CommentLength, Rating} from '../../const';
+import {isCommentFormReady} from '../../utils/offers';
 import {useAppDispatch, useAppSelector} from '../../hooks';
 import {sendCommentAction} from '../../store/api-action';
 import {getCommentDeliveringStatus, getCommentProcessingStatus} from '../../store/app-data/app-data.selectors';
@@ -28,7 +29,7 @@ function CommentForm(): JSX.Element {
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
 
-    if (formData.rating && formData.comment.length >= MIN_COMMENT_LENGTH && formData.comment.length <= MAX_COMMENT_LENGTH && params.id) {
+    if (isCommentFormReady(formData, isCommentProcessing) && params.id) {
       dispatch(sendCommentAction({
         id: params.id,
         commentData: {
@@ -95,12 +96,12 @@ function CommentForm(): JSX.Element {
       />
       <div className='reviews__button-wrapper'>
         <p className='reviews__help'>
-          To submit review please make sure to set <span className='reviews__star'>rating</span> and describe your stay with at least <b className='reviews__text-amount'>{MIN_COMMENT_LENGTH} characters</b>.
+          To submit review please make sure to set <span className='reviews__star'>rating</span> and describe your stay with at least <b className='reviews__text-amount'>{CommentLength.Min} characters</b>.
         </p>
         <button
           className='reviews__submit  form__submit button'
           type='submit'
-          disabled={!formData.rating || formData.comment.length < MIN_COMMENT_LENGTH || formData.comment.length > 300 || isCommentProcessing}
+          disabled={!isCommentFormReady(formData, isCommentProcessing)}
         >
           Submit
         </button>

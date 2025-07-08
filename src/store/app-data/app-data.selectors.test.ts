@@ -3,7 +3,7 @@ import {NameSpace} from '../../const';
 import {Offer, StandaloneOffer} from '../../types/offer';
 import {Review} from '../../types/review';
 import {makeMockOffer, makeMockReview, makeMockStandaloneOffer} from '../../utils/mocks';
-import {getCommentDeliveringStatus, getCommentProcessingStatus, getFavoriteProcessingStatus, getFavoritesLoadingStatus, getNearPlaces, getNearPlacesLoadingStatus, getOfferErrorStatus, getOffers, getOffersLoadingStatus, getReviews, getReviewsLoadingStatus, getStandaloneOffer, getStandaloneOfferLoadingStatus} from './app-data.selectors';
+import {getCommentDeliveringStatus, getCommentProcessingStatus, getFavoriteProcessingStatus, getFavoritesLoadingStatus, getNearPlaces, getNearPlacesLoadingStatus, getNotFoundErrorStatus, getOffers, getOffersLoadingStatus, getReviews, getReviewsLoadingStatus, getStandaloneOffer, getStandaloneOfferLoadingStatus} from './app-data.selectors';
 
 describe('App Data Selectors', () => {
   const mockOffer: Offer = makeMockOffer();
@@ -19,7 +19,7 @@ describe('App Data Selectors', () => {
       isFavoritesLoading: datatype.boolean(),
       isNearPlacesLoading: datatype.boolean(),
       isOffersLoading: datatype.boolean(),
-      isOfferNotFound: datatype.boolean(),
+      isNotFoundError: datatype.boolean(),
       isReviewsLoading: datatype.boolean(),
       isStandaloneOfferLoading: datatype.boolean(),
       nearPlaces: [mockOffer],
@@ -78,11 +78,11 @@ describe('App Data Selectors', () => {
     expect(result).toBe(isNearPlacesLoading);
   });
 
-  it('should return offer error status from state', () => {
-    const {isOfferNotFound} = state[NameSpace.Data];
-    const result = getOfferErrorStatus(state);
+  it('should return not found error status from state', () => {
+    const {isNotFoundError} = state[NameSpace.Data];
+    const result = getNotFoundErrorStatus(state);
 
-    expect(result).toBe(isOfferNotFound);
+    expect(result).toBe(isNotFoundError);
   });
 
   it('should return offers from state', () => {

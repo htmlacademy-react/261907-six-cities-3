@@ -1,3 +1,4 @@
+import {memo, PointerEvent} from 'react';
 import cn from 'classnames';
 import {CardClass} from '../../const';
 import {Offer} from '../../types/offer';
@@ -6,9 +7,11 @@ import OfferCard from '../../component/offer-card/offer-card';
 type OffersListProps = {
   className: CardClass;
   offers: Offer[];
-  onOfferEnter?: (offerId: string) => void;
+  onOfferEnter?: (evt: PointerEvent<HTMLElement>) => void;
   onOfferLeave?: () => void;
 }
+
+const MemorizedOfferCard = memo(OfferCard);
 
 function OffersList({className, offers, onOfferEnter, onOfferLeave}: OffersListProps): JSX.Element {
   return (
@@ -23,15 +26,11 @@ function OffersList({className, offers, onOfferEnter, onOfferLeave}: OffersListP
       data-testid='offers-list'
     >
       {offers.map((offer: Offer) => (
-        <OfferCard
+        <MemorizedOfferCard
           key={offer.id}
           offer={offer}
           className={className}
-          onOfferEnter={() => {
-            if (onOfferEnter) {
-              onOfferEnter(offer.id);
-            }
-          }}
+          onOfferEnter={onOfferEnter}
           onOfferLeave={onOfferLeave}
         />
       ))}

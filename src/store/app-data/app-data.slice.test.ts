@@ -20,7 +20,7 @@ describe('App Data Slice', () => {
     isFavoriteProcessing: datatype.boolean(),
     isNearPlacesLoading: datatype.boolean(),
     isOffersLoading: datatype.boolean(),
-    isOfferNotFound: datatype.boolean(),
+    isNotFoundError: datatype.boolean(),
     isReviewsLoading: datatype.boolean(),
     isStandaloneOfferLoading: datatype.boolean(),
     nearPlaces: [mockOffer],
@@ -44,7 +44,7 @@ describe('App Data Slice', () => {
       isFavoritesLoading: false,
       isNearPlacesLoading: false,
       isOffersLoading: false,
-      isOfferNotFound: false,
+      isNotFoundError: false,
       isReviewsLoading: false,
       isStandaloneOfferLoading: false,
       nearPlaces: [],
@@ -124,10 +124,11 @@ describe('App Data Slice', () => {
     expect(result).toEqual(expectedState);
   });
 
-  it('should set isOffersLoading to true with getOffersAction.pending', () => {
+  it('should set isOffersLoading to true and isNotFoundError to false with getOffersAction.pending', () => {
     const expectedState = {
       ...state,
-      isOffersLoading: true
+      isOffersLoading: true,
+      isNotFoundError: false
     };
 
     const result = appData.reducer(state, getOffersAction.pending);
@@ -135,20 +136,27 @@ describe('App Data Slice', () => {
     expect(result).toEqual(expectedState);
   });
 
-  it('should set isOffersLoading to false and offers with getOffersAction.fulfilled', () => {
+  it('should set isOffersLoading to false, offers and favorite offers with getOffersAction.fulfilled', () => {
+    const favoriteOffer = {
+      ...mockOffer,
+      isFavorite: true
+    };
+
     const pendingState = {
       ...state,
       isOffersLoading: false,
-      offers: []
+      offers: [],
+      favorites: []
     };
 
     const expectedState = {
       ...pendingState,
       isOffersLoading: false,
-      offers: [mockOffer]
+      offers: [favoriteOffer],
+      favorites: [favoriteOffer]
     };
 
-    const result = appData.reducer(state, getOffersAction.fulfilled(
+    const result = appData.reducer(pendingState, getOffersAction.fulfilled(
       [mockOffer],
       '',
       undefined
@@ -157,10 +165,11 @@ describe('App Data Slice', () => {
     expect(result).toEqual(expectedState);
   });
 
-  it('should set isOffersLoading to false and offers to empty array with getOffersAction.rejected', () => {
+  it('should set isOffersLoading to false, isNotFoundError to true, and offers to empty array with getOffersAction.rejected', () => {
     const expectedState = {
       ...state,
       isOffersLoading: false,
+      isNotFoundError: true,
       offers: []
     };
 
@@ -282,11 +291,11 @@ describe('App Data Slice', () => {
     expect(result).toEqual(expectedState);
   });
 
-  it('should set isStandaloneOfferLoading to true, isOfferNotFound to false and requestedOffer to null with requestStandaloneOfferAction.pending', () => {
+  it('should set isStandaloneOfferLoading to true, isNotFoundError to false and requestedOffer to null with requestStandaloneOfferAction.pending', () => {
     const expectedState = {
       ...state,
       isStandaloneOfferLoading: true,
-      isOfferNotFound: false,
+      isNotFoundError: false,
       requestedOffer: null
     };
 
@@ -317,11 +326,11 @@ describe('App Data Slice', () => {
     expect(result).toEqual(expectedState);
   });
 
-  it('should set isStandaloneOfferLoading to false and isOfferNotFound to true with requestStandaloneOfferAction.rejected', () => {
+  it('should set isStandaloneOfferLoading to false and isNotFoundError to true with requestStandaloneOfferAction.rejected', () => {
     const expectedState = {
       ...state,
       isStandaloneOfferLoading: false,
-      isOfferNotFound: true
+      isNotFoundError: true
     };
 
     const result = appData.reducer(state, requestStandaloneOfferAction.rejected);
