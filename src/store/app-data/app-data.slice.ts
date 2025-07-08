@@ -4,8 +4,9 @@ import {InitialState} from '../../types/state';
 import {changeFavoriteStatusAction, getFavoritesAction, getOffersAction, logoutAction, requestNearPlacesAction, requestReviewsForOfferAction, requestStandaloneOfferAction, sendCommentAction} from '../api-action';
 import {checkFavorites, clearFavorites, findOffersAndChangeFavoriteStatus, updateFavorites} from '../../utils/offers';
 
-const initialState: Pick<InitialState, 'favorites' | 'isCommentProcessing' | 'isFavoritesLoading' | 'isFavoriteProcessing' | 'isNearPlacesLoading' | 'isOffersLoading' | 'isOfferNotFound' | 'isReviewsLoading' | 'isStandaloneOfferLoading' | 'nearPlaces' |'offers' | 'requestedOffer' |'reviews'> = {
+const initialState: Pick<InitialState, 'favorites' | 'isCommentDelivered' | 'isCommentProcessing' | 'isFavoritesLoading' | 'isFavoriteProcessing' | 'isNearPlacesLoading' | 'isOffersLoading' | 'isOfferNotFound' | 'isReviewsLoading' | 'isStandaloneOfferLoading' | 'nearPlaces' |'offers' | 'requestedOffer' |'reviews'> = {
   favorites: [],
+  isCommentDelivered: false,
   isCommentProcessing: false,
   isFavoritesLoading: false,
   isFavoriteProcessing: false,
@@ -114,9 +115,11 @@ const appData = createSlice({
       })
       .addCase(sendCommentAction.pending, (state) => {
         state.isCommentProcessing = true;
+        state.isCommentDelivered = false;
       })
       .addCase(sendCommentAction.fulfilled, (state, action) => {
         state.isCommentProcessing = false;
+        state.isCommentDelivered = true;
         state.reviews = [action.payload, ...state.reviews];
       })
       .addCase(sendCommentAction.rejected, (state) => {

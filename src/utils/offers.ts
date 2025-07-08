@@ -1,5 +1,6 @@
-import {Sorting} from '../const';
+import {MAX_REVIEWS_TO_RENDER, Sorting} from '../const';
 import {Offer, LocationWithOffers, OfferLocationInfo, StandaloneOffer, FavoriteOffer} from '../types/offer';
+import {Review} from '../types/review';
 
 function checkFavorites(offers: Offer[], favorites: Offer[]): Offer[] {
   const favoritesIds = favorites.map((offer: Offer) => offer.id);
@@ -48,6 +49,15 @@ function findOffersAndChangeFavoriteStatus(offers: Offer[], {id, isFavorite}: Of
   }
 
   return offers;
+}
+
+function prepareReviewsForRendering(reviews: Review[]) {
+  return [...reviews].sort((reviewA: Review, reviewB: Review) => {
+    const dateA: Date = new Date(reviewA.date);
+    const dateB: Date = new Date(reviewB.date);
+
+    return dateB.getTime() - dateA.getTime();
+  }).slice(0, MAX_REVIEWS_TO_RENDER);
 }
 
 function sortOffersByLocation(offers: Offer[]): LocationWithOffers[] {
@@ -110,6 +120,7 @@ export {
   extractOfferFromFavorite,
   findFavorites,
   findOffersAndChangeFavoriteStatus,
+  prepareReviewsForRendering,
   sortOffersByLocation,
   updateFavorites,
   updateOffersToRender

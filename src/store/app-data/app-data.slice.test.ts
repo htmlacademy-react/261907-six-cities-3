@@ -14,6 +14,7 @@ describe('App Data Slice', () => {
 
   const state = {
     favorites: [mockOffer],
+    isCommentDelivered: datatype.boolean(),
     isCommentProcessing: datatype.boolean(),
     isFavoritesLoading: datatype.boolean(),
     isFavoriteProcessing: datatype.boolean(),
@@ -37,6 +38,7 @@ describe('App Data Slice', () => {
   it('should return default initial state with empty action and undefined state', () => {
     const initialState = {
       favorites: [],
+      isCommentDelivered: false,
       isCommentProcessing: false,
       isFavoriteProcessing: false,
       isFavoritesLoading: false,
@@ -327,10 +329,11 @@ describe('App Data Slice', () => {
     expect(result).toEqual(expectedState);
   });
 
-  it('should set isCommentProcessing to true with sendCommentAction.pending', () => {
+  it('should set isCommentProcessing to true and isCommentDelivered to false with sendCommentAction.pending', () => {
     const expectedState = {
       ...state,
-      isCommentProcessing: true
+      isCommentProcessing: true,
+      isCommentDelivered: false
     };
 
     const result = appData.reducer(state, sendCommentAction.pending);
@@ -338,10 +341,11 @@ describe('App Data Slice', () => {
     expect(result).toEqual(expectedState);
   });
 
-  it('should set isCommentProcessing to false and update reviews with sendCommentAction.fulfilled', () => {
+  it('should set isCommentProcessing to false and isCommentDelivered to true and update reviews with sendCommentAction.fulfilled', () => {
     const expectedState = {
       ...state,
       isCommentProcessing: false,
+      isCommentDelivered: true,
       reviews: [mockReview, mockReview]
     };
 

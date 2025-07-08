@@ -80,7 +80,7 @@ describe('App Routing', () => {
     mockHistory.push(unknownRoute);
     render(withStoreComponent);
 
-    expect(screen.getByText('The Page Isn’t Found')).toBeInTheDocument();
+    expect(screen.getByText('404: The Page Isn’t Found')).toBeInTheDocument();
     expect(screen.getByTestId(mainPageSuggestTestId)).toBeInTheDocument();
   });
 });

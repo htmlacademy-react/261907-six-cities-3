@@ -3,7 +3,7 @@ import {NameSpace} from '../../const';
 import {Offer, StandaloneOffer} from '../../types/offer';
 import {Review} from '../../types/review';
 import {makeMockOffer, makeMockReview, makeMockStandaloneOffer} from '../../utils/mocks';
-import {getCommentProcessingStatus, getFavoriteProcessingStatus, getFavoritesLoadingStatus, getNearPlaces, getNearPlacesLoadingStatus, getOfferErrorStatus, getOffers, getOffersLoadingStatus, getReviews, getReviewsLoadingStatus, getStandaloneOffer, getStandaloneOfferLoadingStatus} from './app-data.selectors';
+import {getCommentDeliveringStatus, getCommentProcessingStatus, getFavoriteProcessingStatus, getFavoritesLoadingStatus, getNearPlaces, getNearPlacesLoadingStatus, getOfferErrorStatus, getOffers, getOffersLoadingStatus, getReviews, getReviewsLoadingStatus, getStandaloneOffer, getStandaloneOfferLoadingStatus} from './app-data.selectors';
 
 describe('App Data Selectors', () => {
   const mockOffer: Offer = makeMockOffer();
@@ -13,6 +13,7 @@ describe('App Data Selectors', () => {
   const state = {
     [NameSpace.Data]: {
       favorites: [mockOffer],
+      isCommentDelivered: datatype.boolean(),
       isCommentProcessing: datatype.boolean(),
       isFavoriteProcessing: datatype.boolean(),
       isFavoritesLoading: datatype.boolean(),
@@ -27,6 +28,13 @@ describe('App Data Selectors', () => {
       reviews: [mockReview]
     }
   };
+
+  it('should return comment delivering status', () => {
+    const {isCommentDelivered} = state[NameSpace.Data];
+    const result = getCommentDeliveringStatus(state);
+
+    expect(result).toBe(isCommentDelivered);
+  });
 
   it('should return comment processing status', () => {
     const {isCommentProcessing} = state[NameSpace.Data];

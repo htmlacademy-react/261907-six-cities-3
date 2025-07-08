@@ -5,7 +5,7 @@ import cn from 'classnames';
 import {AuthorizationStatus, BookMarkButtonClass, CardClass, MapClass, MAX_IMAGES_TO_RENDER_IN_OFFER, MAX_NEAR_PLACES_TO_RENDER} from '../../const';
 import {Offer, OfferLocationInfo} from '../../types/offer';
 import {capitalize} from '../../utils/utils';
-import {extractInfoForMap} from '../../utils/offers';
+import {extractInfoForMap, prepareReviewsForRendering} from '../../utils/offers';
 import {useAppDispatch, useAppSelector} from '../../hooks';
 import {getNearPlaces, getNearPlacesLoadingStatus, getOfferErrorStatus, getReviews, getReviewsLoadingStatus, getStandaloneOffer, getStandaloneOfferLoadingStatus} from '../../store/app-data/app-data.selectors';
 import {getAuthorizationStatus} from '../../store/user-process/user-process.selectors';
@@ -60,7 +60,11 @@ function OfferScreen(): JSX.Element {
   }
 
   const imagesToRender = requestedOffer.images.slice(0, MAX_IMAGES_TO_RENDER_IN_OFFER);
+
+  const reviewsToRender = prepareReviewsForRendering(reviews);
+
   const nearPlacesToRender = nearPlaces.slice(0, MAX_NEAR_PLACES_TO_RENDER);
+
   const offerLocationsForMap: OfferLocationInfo[] = [
     ...nearPlacesToRender.map((offer: Offer) => extractInfoForMap(offer)),
     extractInfoForMap(requestedOffer)
@@ -140,7 +144,7 @@ function OfferScreen(): JSX.Element {
                 {(isAuthorized || Boolean(reviews.length)) && (
                   <h2 className='reviews__title'>
                     Reviews
-                    {Boolean(reviews.length) && (
+                    {Boolean(reviewsToRender.length) && (
                       <>
                         &nbsp;&middot;&nbsp;
                         <span className='reviews__amount'>{reviews.length}</span>
@@ -148,7 +152,7 @@ function OfferScreen(): JSX.Element {
                     )}
                   </h2>
                 )}
-                <ReviewsList reviews={reviews} />
+                <ReviewsList reviews={reviewsToRender} />
                 {isAuthorized && <CommentForm />}
               </section>
             </div>

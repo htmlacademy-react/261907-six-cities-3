@@ -104,6 +104,7 @@ function makeMockStore(initialState?: Partial<State>): State {
     },
     DATA: {
       favorites: [makeMockOffer()],
+      isCommentDelivered: false,
       isCommentProcessing: false,
       isFavoriteProcessing: false,
       isFavoritesLoading: false,

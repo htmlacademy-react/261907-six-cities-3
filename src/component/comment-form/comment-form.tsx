@@ -1,19 +1,29 @@
-import React, {ChangeEvent, FormEvent, useState} from 'react';
+import React, {ChangeEvent, FormEvent, useEffect, useState} from 'react';
 import {useParams} from 'react-router-dom';
 import {MAX_COMMENT_LENGTH, MIN_COMMENT_LENGTH, Rating} from '../../const';
 import {useAppDispatch, useAppSelector} from '../../hooks';
 import {sendCommentAction} from '../../store/api-action';
-import {getCommentProcessingStatus} from '../../store/app-data/app-data.selectors';
+import {getCommentDeliveringStatus, getCommentProcessingStatus} from '../../store/app-data/app-data.selectors';
 
 function CommentForm(): JSX.Element {
   const params = useParams();
   const isCommentProcessing = useAppSelector(getCommentProcessingStatus);
+  const isCommentDelivered = useAppSelector(getCommentDeliveringStatus);
   const dispatch = useAppDispatch();
 
   const [formData, setFormData] = useState({
     rating: 0,
     comment: ''
   });
+
+  useEffect(() => {
+    if (isCommentDelivered) {
+      setFormData({
+        comment: '',
+        rating: 0
+      });
+    }
+  }, [isCommentDelivered]);
 
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
@@ -26,8 +36,6 @@ function CommentForm(): JSX.Element {
           comment: formData.comment
         }
       }));
-
-      console.log(error);
     }
   };
 

@@ -3,6 +3,10 @@ import {State} from '../../types/state';
 import {Offer, StandaloneOffer} from '../../types/offer';
 import {Review} from '../../types/review';
 
+function getCommentDeliveringStatus(state: Pick<State, NameSpace.Data>): boolean {
+  return state[NameSpace.Data].isCommentDelivered;
+}
+
 function getCommentProcessingStatus(state: Pick<State, NameSpace.Data>): boolean {
   return state[NameSpace.Data].isCommentProcessing;
 }
@@ -56,6 +60,7 @@ function getStandaloneOfferLoadingStatus(state: Pick<State, NameSpace.Data>): bo
 }
 
 export {
+  getCommentDeliveringStatus,
   getCommentProcessingStatus,
   getFavoriteProcessingStatus,
   getFavorites,
