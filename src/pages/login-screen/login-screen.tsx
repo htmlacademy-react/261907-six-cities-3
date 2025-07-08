@@ -1,11 +1,12 @@
 import {Helmet} from 'react-helmet-async';
+import {datatype} from 'faker';
 import {CITIES} from '../../const';
 import Header from '../../component/header/header';
 import LoginForm from '../../component/login-form/login-form';
 import LinkToCity from '../../component/link-to-city/link-to-city';
 
 function LoginScreen() {
-  const city: string = CITIES[3];
+  const city = CITIES[datatype.number(CITIES.length - 1)];
 
   return (
     <div className='page  page--gray  page--login'>

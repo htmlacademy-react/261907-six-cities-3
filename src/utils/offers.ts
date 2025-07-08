@@ -1,5 +1,5 @@
 import {Sorting} from '../const';
-import {Offer, LocationWithOffers} from '../types/offer';
+import {Offer, LocationWithOffers, OfferLocationInfo, StandaloneOffer} from '../types/offer';
 
 function checkFavorites(offers: Offer[], favorites: Offer[]): Offer[] {
   const favoritesIds = favorites.map((offer: Offer) => offer.id);
@@ -9,6 +9,14 @@ function checkFavorites(offers: Offer[], favorites: Offer[]): Offer[] {
 
 function clearFavorites(offers: Offer[]): Offer[] {
   return offers.map((offer: Offer) => ({...offer, isFavorite: false}));
+}
+
+function extractInfoForMap(offer: Offer | StandaloneOffer): OfferLocationInfo {
+  return {
+    id: offer.id,
+    city: offer.city,
+    location: offer.location
+  };
 }
 
 function findFavorites(offers: Offer[]): Offer[] {
@@ -74,6 +82,7 @@ function updateOffersToRender(offers: Offer[], city: string, sorting: Sorting): 
 export {
   checkFavorites,
   clearFavorites,
+  extractInfoForMap,
   findFavorites,
   findOffersAndChangeFavoriteStatus,
   sortOffersByLocation,

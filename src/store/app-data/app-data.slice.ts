@@ -105,7 +105,7 @@ const appData = createSlice({
       })
       .addCase(sendCommentAction.fulfilled, (state, action) => {
         state.isCommentProcessing = false;
-        state.reviews = [...state.reviews, action.payload];
+        state.reviews = [action.payload, ...state.reviews];
       })
       .addCase(sendCommentAction.rejected, (state) => {
         state.isCommentProcessing = false;

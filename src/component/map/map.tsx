@@ -1,14 +1,14 @@
 
 import {useEffect, useRef} from 'react';
-import {Icon, Marker} from 'leaflet';
+import {Icon, layerGroup, Marker} from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import {URL_MARKER, URL_MARKER_ACTIVE, MapClass} from '../../const';
-import {City, Offer} from '../../types/offer';
+import {City, OfferLocationInfo} from '../../types/offer';
 import useMap from '../../hooks/use-map';
 
 type MapProps = {
   className: MapClass;
-  offers: Offer[];
+  offers: OfferLocationInfo[];
   enteredOffer?: string;
 };
 
@@ -32,7 +32,9 @@ function Map({className, offers, enteredOffer = ''}: MapProps): JSX.Element {
 
   useEffect(() => {
     if (map) {
-      offers.forEach((offer: Offer) => {
+      const markerLayer = layerGroup().addTo(map);
+
+      offers.forEach((offer: OfferLocationInfo) => {
         const marker = new Marker({
           lat: offer.location.latitude,
           lng: offer.location.longitude
@@ -44,7 +46,7 @@ function Map({className, offers, enteredOffer = ''}: MapProps): JSX.Element {
               ? customIconActive
               : customIcon
           )
-          .addTo(map);
+          .addTo(markerLayer);
       });
 
       if (renderedCity.current !== city.name) {
@@ -53,6 +55,10 @@ function Map({className, offers, enteredOffer = ''}: MapProps): JSX.Element {
           city.location.zoom
         );
       }
+
+      return () => {
+        map.removeLayer(markerLayer);
+      };
     }
   }, [map, offers, enteredOffer, city]);
 

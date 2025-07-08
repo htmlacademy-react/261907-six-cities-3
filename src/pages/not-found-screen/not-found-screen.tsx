@@ -1,11 +1,12 @@
 import {Helmet} from 'react-helmet-async';
 import {Link} from 'react-router-dom';
+import {datatype} from 'faker';
 import {AppRoute, CITIES} from '../../const';
 import Header from '../../component/header/header';
 import LinkToCity from '../../component/link-to-city/link-to-city';
 
 function NotFoundScreen(): JSX.Element {
-  const city = CITIES[3];
+  const city = CITIES[datatype.number(CITIES.length - 1)];
 
   return (
     <div className='page  page--gray  page--login'>

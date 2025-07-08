@@ -6,7 +6,15 @@ const CITIES = ['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseld
 
 const EMAIL_CHECKING_REGEXP = new RegExp(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/);
 
+const MAX_IMAGES_TO_RENDER_IN_OFFER = 6;
+
+const MAX_NEAR_PLACES_TO_RENDER = 3;
+
+const MAX_REVIEWS_TO_RENDER = 10;
+
 const MIN_COMMENT_LENGTH = 50;
+
+const MAX_COMMENT_LENGTH = 300;
 
 const REQUEST_TIMEOUT = 5000;
 
@@ -77,6 +85,10 @@ export {
   BACKEND_URL,
   CITIES,
   EMAIL_CHECKING_REGEXP,
+  MAX_IMAGES_TO_RENDER_IN_OFFER,
+  MAX_NEAR_PLACES_TO_RENDER,
+  MAX_REVIEWS_TO_RENDER,
+  MAX_COMMENT_LENGTH,
   MIN_COMMENT_LENGTH,
   REQUEST_TIMEOUT,
   URL_MARKER,

@@ -48,3 +48,5 @@ export type StandaloneOffer = Omit<Offer, 'previewImage'> & {
   images: string[];
   maxAdults: number;
 };
+
+export type OfferLocationInfo = Pick<Offer, 'id' | 'city' | 'location'>;
