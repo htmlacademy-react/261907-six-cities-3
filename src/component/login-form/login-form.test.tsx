@@ -22,7 +22,7 @@ describe('Component: LoginForm', () => {
     const loginFieldTestId = 'login-field';
     const passwordFieldTestId = 'password-field';
     const mockLogin = internet.email();
-    const mockPassword = internet.password();
+    const mockPassword = 'q1w2e3q';
     const {withStoreComponent} = withStore(<LoginForm />, makeMockStore());
 
     render(withStoreComponent);
