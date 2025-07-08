@@ -31,8 +31,8 @@ function getNearPlacesLoadingStatus(state: Pick<State, NameSpace.Data>): boolean
   return state[NameSpace.Data].isNearPlacesLoading;
 }
 
-function getOfferErrorStatus(state: Pick<State, NameSpace.Data>): boolean {
-  return state[NameSpace.Data].isOfferNotFound;
+function getNotFoundErrorStatus(state: Pick<State, NameSpace.Data>): boolean {
+  return state[NameSpace.Data].isNotFoundError;
 }
 
 function getOffers(state: Pick<State, NameSpace.Data>): Offer[] {
@@ -67,7 +67,7 @@ export {
   getFavoritesLoadingStatus,
   getNearPlaces,
   getNearPlacesLoadingStatus,
-  getOfferErrorStatus,
+  getNotFoundErrorStatus,
   getOffers,
   getOffersLoadingStatus,
   getReviews,

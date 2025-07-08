@@ -17,7 +17,7 @@ export type InitialState = {
   isReviewsLoading: boolean;
   isNearPlacesLoading: boolean;
   nearPlaces: Offer[];
-  isOfferNotFound: boolean;
+  isNotFoundError: boolean;
   isFavoriteProcessing: boolean;
   isCommentProcessing: boolean;
   isUserProcessing: boolean;

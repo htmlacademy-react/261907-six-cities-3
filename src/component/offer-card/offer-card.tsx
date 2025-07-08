@@ -1,14 +1,16 @@
+import {PointerEvent} from 'react';
 import {Link} from 'react-router-dom';
 import cn from 'classnames';
 import {AppRoute, BookMarkButtonClass, CardClass} from '../../const';
-import {capitalize} from '../../utils/utils';
 import {Offer} from '../../types/offer';
+import {capitalize} from '../../utils/utils';
+import {applyRatingStyle} from '../../utils/offers';
 import BookmarkButton from '../bookmark-button/bookmark-button';
 
 type OfferCardProps = {
   offer: Offer;
   className: CardClass;
-  onOfferEnter?: () => void;
+  onOfferEnter?: (evt: PointerEvent<HTMLElement>) => void;
   onOfferLeave?: () => void;
 };
 
@@ -19,6 +21,7 @@ function OfferCard({offer, className, onOfferEnter, onOfferLeave}: OfferCardProp
       onMouseEnter={onOfferEnter}
       onMouseLeave={onOfferLeave}
       data-testid='offer-card'
+      id={offer.id}
     >
       {offer.isPremium && <div className='place-card__mark'><span>Premium</span></div>}
       <div className={`${className}__image-wrapper  place-card__image-wrapper`}>
@@ -46,7 +49,7 @@ function OfferCard({offer, className, onOfferEnter, onOfferLeave}: OfferCardProp
         </div>
         <div className='place-card__rating  rating'>
           <div className='place-card__stars  rating__stars'>
-            <span style={{width: `${Math.round(offer.rating) * 20}%`}} data-testid={offer.rating}/>
+            <span style={applyRatingStyle(offer.rating)} data-testid={offer.rating}/>
             <span className='visually-hidden'>Rating</span>
           </div>
         </div>

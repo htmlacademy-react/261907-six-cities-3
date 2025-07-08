@@ -2,9 +2,9 @@ import {createSlice} from '@reduxjs/toolkit';
 import {NameSpace} from '../../const';
 import {InitialState} from '../../types/state';
 import {changeFavoriteStatusAction, getFavoritesAction, getOffersAction, logoutAction, requestNearPlacesAction, requestReviewsForOfferAction, requestStandaloneOfferAction, sendCommentAction} from '../api-action';
-import {checkFavorites, clearFavorites, findOffersAndChangeFavoriteStatus, updateFavorites} from '../../utils/offers';
+import {checkFavorites, clearFavorites, findFavorites, findOffersAndChangeFavoriteStatus, updateFavorites} from '../../utils/offers';
 
-const initialState: Pick<InitialState, 'favorites' | 'isCommentDelivered' | 'isCommentProcessing' | 'isFavoritesLoading' | 'isFavoriteProcessing' | 'isNearPlacesLoading' | 'isOffersLoading' | 'isOfferNotFound' | 'isReviewsLoading' | 'isStandaloneOfferLoading' | 'nearPlaces' |'offers' | 'requestedOffer' |'reviews'> = {
+const initialState: Pick<InitialState, 'favorites' | 'isCommentDelivered' | 'isCommentProcessing' | 'isFavoritesLoading' | 'isFavoriteProcessing' | 'isNearPlacesLoading' | 'isOffersLoading' | 'isNotFoundError' | 'isReviewsLoading' | 'isStandaloneOfferLoading' | 'nearPlaces' |'offers' | 'requestedOffer' |'reviews'> = {
   favorites: [],
   isCommentDelivered: false,
   isCommentProcessing: false,
@@ -12,7 +12,7 @@ const initialState: Pick<InitialState, 'favorites' | 'isCommentDelivered' | 'isC
   isFavoriteProcessing: false,
   isNearPlacesLoading: false,
   isOffersLoading: false,
-  isOfferNotFound: false,
+  isNotFoundError: false,
   isReviewsLoading: false,
   isStandaloneOfferLoading: false,
   nearPlaces: [],
@@ -58,14 +58,17 @@ const appData = createSlice({
       })
       .addCase(getOffersAction.pending, (state) => {
         state.isOffersLoading = true;
+        state.isNotFoundError = false;
       })
       .addCase(getOffersAction.fulfilled, (state, action) => {
         state.isOffersLoading = false;
         state.offers = action.payload;
+        state.favorites = findFavorites(state.offers);
       })
       .addCase(getOffersAction.rejected, (state) => {
         state.isOffersLoading = false;
         state.offers = [];
+        state.isNotFoundError = true;
       })
       .addCase(logoutAction.fulfilled, (state) => {
         state.offers = clearFavorites(state.offers);
@@ -102,7 +105,7 @@ const appData = createSlice({
       })
       .addCase(requestStandaloneOfferAction.pending, (state) => {
         state.isStandaloneOfferLoading = true;
-        state.isOfferNotFound = false;
+        state.isNotFoundError = false;
         state.requestedOffer = null;
       })
       .addCase(requestStandaloneOfferAction.fulfilled, (state, action) => {
@@ -111,7 +114,7 @@ const appData = createSlice({
       })
       .addCase(requestStandaloneOfferAction.rejected, (state) => {
         state.isStandaloneOfferLoading = false;
-        state.isOfferNotFound = true;
+        state.isNotFoundError = true;
       })
       .addCase(sendCommentAction.pending, (state) => {
         state.isCommentProcessing = true;

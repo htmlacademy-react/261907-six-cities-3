@@ -5,9 +5,9 @@ import cn from 'classnames';
 import {AuthorizationStatus, BookMarkButtonClass, CardClass, MapClass, MAX_IMAGES_TO_RENDER_IN_OFFER, MAX_NEAR_PLACES_TO_RENDER} from '../../const';
 import {Offer, OfferLocationInfo} from '../../types/offer';
 import {capitalize} from '../../utils/utils';
-import {extractInfoForMap, prepareReviewsForRendering} from '../../utils/offers';
+import {applyRatingStyle, extractInfoForMap, prepareReviewsForRendering} from '../../utils/offers';
 import {useAppDispatch, useAppSelector} from '../../hooks';
-import {getNearPlaces, getNearPlacesLoadingStatus, getOfferErrorStatus, getReviews, getReviewsLoadingStatus, getStandaloneOffer, getStandaloneOfferLoadingStatus} from '../../store/app-data/app-data.selectors';
+import {getNearPlaces, getNearPlacesLoadingStatus, getNotFoundErrorStatus, getReviews, getReviewsLoadingStatus, getStandaloneOffer, getStandaloneOfferLoadingStatus} from '../../store/app-data/app-data.selectors';
 import {getAuthorizationStatus} from '../../store/user-process/user-process.selectors';
 import {requestNearPlacesAction, requestReviewsForOfferAction, requestStandaloneOfferAction} from '../../store/api-action';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
@@ -37,7 +37,7 @@ function OfferScreen(): JSX.Element {
   const requestedOffer = useAppSelector(getStandaloneOffer);
   const reviews = useAppSelector(getReviews);
   const nearPlaces = useAppSelector(getNearPlaces);
-  const isOfferNotFound = useAppSelector(getOfferErrorStatus);
+  const isNotFoundError = useAppSelector(getNotFoundErrorStatus);
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
   const isAuthorized = authorizationStatus === AuthorizationStatus.Auth;
 
@@ -51,7 +51,7 @@ function OfferScreen(): JSX.Element {
     }
   }, [dispatch, params.id]);
 
-  if (isOfferNotFound) {
+  if (isNotFoundError) {
     return <NotFoundScreen />;
   }
 
@@ -96,7 +96,7 @@ function OfferScreen(): JSX.Element {
               </div>
               <div className='offer__rating  rating'>
                 <div className='offer__stars  rating__stars'>
-                  <span style={{width: `${Math.round(requestedOffer.rating) * 20}%`}} />
+                  <span style={applyRatingStyle(requestedOffer.rating)} />
                   <span className='visually-hidden'>Rating</span>
                 </div>
                 <span className='offer__rating-value  rating__value'>{requestedOffer.rating}</span>

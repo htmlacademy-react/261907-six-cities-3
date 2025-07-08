@@ -1,10 +1,10 @@
-import {memo, useCallback, useState} from 'react';
+import {memo, PointerEvent, useCallback, useMemo, useState} from 'react';
 import {Helmet} from 'react-helmet-async';
 import cn from 'classnames';
 import {CardClass, MapClass, Sorting} from '../../const';
 import {updateOffersToRender} from '../../utils/offers';
 import {useAppSelector} from '../../hooks';
-import {getOffers} from '../../store/app-data/app-data.selectors';
+import {getNotFoundErrorStatus, getOffers} from '../../store/app-data/app-data.selectors';
 import {getCity} from '../../store/app-process/app-process.selectors';
 import Header from '../../component/header/header';
 import LocationsList from '../../component/locations-list/locations-list';
@@ -23,19 +23,20 @@ function MainScreen(): JSX.Element {
   const [sorting, setSorting] = useState(Sorting.Popular);
   const offers = useAppSelector(getOffers);
   const activeCity = useAppSelector(getCity);
-  const offersToRender = updateOffersToRender(offers, activeCity, sorting);
+  const isNotFoundError = useAppSelector(getNotFoundErrorStatus);
+  const offersToRender = useMemo(() => updateOffersToRender(offers, activeCity, sorting), [offers, activeCity, sorting]);
 
   const handleSortingChange = useCallback((requestedSorting: Sorting) => {
     setSorting(requestedSorting);
   }, []);
 
-  const handleOfferEnter = (offerId: string) => {
-    setEnteredOffer(offerId);
-  };
+  const handleOfferEnter = useCallback((evt: PointerEvent<HTMLElement>) => {
+    setEnteredOffer(evt.currentTarget.id);
+  }, []);
 
-  const handleOfferLeave = () => {
+  const handleOfferLeave = useCallback(() => {
     setEnteredOffer('');
-  };
+  }, []);
 
   return (
     <div className='page  page--gray  page--main'>
@@ -74,7 +75,7 @@ function MainScreen(): JSX.Element {
                   />
                 </CityOffers>
               )
-              : <CityEmpty />}
+              : <CityEmpty withError={isNotFoundError} />}
             <div className='cities__right-section'>
               {Boolean(offersToRender.length) && <Map className={MapClass.Cities} offers={offersToRender} enteredOffer={enteredOffer} />}
             </div>

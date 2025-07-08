@@ -1,6 +1,15 @@
-import {MAX_REVIEWS_TO_RENDER, Sorting} from '../const';
+import {CSSProperties} from 'react';
+import {CommentLength, MAX_RATING, MAX_REVIEWS_TO_RENDER, Sorting} from '../const';
 import {Offer, LocationWithOffers, OfferLocationInfo, StandaloneOffer, FavoriteOffer} from '../types/offer';
-import {Review} from '../types/review';
+import {Comment, Review} from '../types/review';
+import { AuthorizationData } from '../types/user';
+import { isEmailValid, isPasswordValid } from './utils';
+
+function applyRatingStyle(rating: number): CSSProperties {
+  return {
+    width: `${100 / MAX_RATING * Math.round(rating)}%`
+  };
+}
 
 function checkFavorites(offers: Offer[], favorites: Offer[]): Offer[] {
   const favoritesIds = favorites.map((offer: Offer) => offer.id);
@@ -51,7 +60,26 @@ function findOffersAndChangeFavoriteStatus(offers: Offer[], {id, isFavorite}: Of
   return offers;
 }
 
-function prepareReviewsForRendering(reviews: Review[]) {
+function isCommentFormReady(formData: Comment, isProcessing: boolean): boolean {
+  return Boolean(
+    !isProcessing
+    && formData.rating
+    && formData.comment.length >= CommentLength.Min
+    && formData.comment.length <= CommentLength.Max
+  );
+}
+
+function isLoginFormReady(formData: AuthorizationData, isProcessing: boolean): boolean {
+  return Boolean(
+    !isProcessing
+    && formData.email
+    && isEmailValid(formData.email)
+    && formData.password
+    && isPasswordValid(formData.password)
+  );
+}
+
+function prepareReviewsForRendering(reviews: Review[]): Review[] {
   return [...reviews].sort((reviewA: Review, reviewB: Review) => {
     const dateA: Date = new Date(reviewA.date);
     const dateB: Date = new Date(reviewB.date);
@@ -114,12 +142,15 @@ function updateOffersToRender(offers: Offer[], city: string, sorting: Sorting): 
 }
 
 export {
+  applyRatingStyle,
   checkFavorites,
   clearFavorites,
   extractInfoForMap,
   extractOfferFromFavorite,
   findFavorites,
   findOffersAndChangeFavoriteStatus,
+  isCommentFormReady,
+  isLoginFormReady,
   prepareReviewsForRendering,
   sortOffersByLocation,
   updateFavorites,
