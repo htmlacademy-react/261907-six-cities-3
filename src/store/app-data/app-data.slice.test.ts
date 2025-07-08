@@ -29,6 +29,23 @@ describe('App Data Slice', () => {
     reviews: [mockReview]
   };
 
+  const initialState = {
+    favorites: [],
+    isCommentDelivered: false,
+    isCommentProcessing: false,
+    isFavoriteProcessing: false,
+    isFavoritesLoading: false,
+    isNearPlacesLoading: false,
+    isOffersLoading: false,
+    isNotFoundError: false,
+    isReviewsLoading: false,
+    isStandaloneOfferLoading: false,
+    nearPlaces: [],
+    offers: [],
+    requestedOffer: null,
+    reviews: []
+  };
+
   it('should return initial state with empty action', () => {
     const result = appData.reducer(state, emptyAction);
 
@@ -36,23 +53,6 @@ describe('App Data Slice', () => {
   });
 
   it('should return default initial state with empty action and undefined state', () => {
-    const initialState = {
-      favorites: [],
-      isCommentDelivered: false,
-      isCommentProcessing: false,
-      isFavoriteProcessing: false,
-      isFavoritesLoading: false,
-      isNearPlacesLoading: false,
-      isOffersLoading: false,
-      isNotFoundError: false,
-      isReviewsLoading: false,
-      isStandaloneOfferLoading: false,
-      nearPlaces: [],
-      offers: [],
-      requestedOffer: null,
-      reviews: []
-    };
-
     const result = appData.reducer(undefined, emptyAction);
 
     expect(result).toEqual(initialState);
@@ -142,22 +142,14 @@ describe('App Data Slice', () => {
       isFavorite: true
     };
 
-    const pendingState = {
-      ...state,
-      isOffersLoading: false,
-      offers: [],
-      favorites: []
-    };
-
     const expectedState = {
-      ...pendingState,
-      isOffersLoading: false,
+      ...initialState,
       offers: [favoriteOffer],
       favorites: [favoriteOffer]
     };
 
-    const result = appData.reducer(pendingState, getOffersAction.fulfilled(
-      [mockOffer],
+    const result = appData.reducer(undefined, getOffersAction.fulfilled(
+      [favoriteOffer],
       '',
       undefined
     ));
