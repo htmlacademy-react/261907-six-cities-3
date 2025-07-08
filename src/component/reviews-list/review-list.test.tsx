@@ -1,11 +1,12 @@
 import {datatype} from 'faker';
 import {render, screen} from '@testing-library/react';
+import {MAX_REVIEWS_TO_RENDER} from '../../const';
 import {makeMockReview} from '../../utils/mocks';
 import ReviewsList from './reviews-list';
 
 describe('Component: ReviewsList', () => {
   it('should render correctly', () => {
-    const mockReviews = Array.from({length: datatype.number(20)}, makeMockReview);
+    const mockReviews = Array.from({length: datatype.number(MAX_REVIEWS_TO_RENDER)}, makeMockReview);
     const reviewsListTestId = 'reviews-list';
     const reviewCardTestId = 'review-card';
 

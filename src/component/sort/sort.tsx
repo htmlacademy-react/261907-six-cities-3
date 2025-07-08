@@ -38,7 +38,7 @@ function Sort({sorting, onSortingChange}: SortProps): JSX.Element {
         }}
         data-testid={sorting}
       >
-        Popular
+        {sorting}
         <svg className='places__sorting-arrow' width='7' height='4'>
           <use xlinkHref='#icon-arrow-select' />
         </svg>

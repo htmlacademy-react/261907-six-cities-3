@@ -10,7 +10,7 @@ describe('Component: CityOffers', () => {
     const mockOffer = makeMockOffer();
     const mockChildTestId = 'child';
     const mockchild = <span data-testid={mockChildTestId} />;
-    const expectedText = `${[mockOffer].length} places to stay in ${mockCity}`;
+    const expectedText = `${[mockOffer].length} place${[mockOffer].length > 1 ? 's' : ''} to stay in ${mockCity}`;
 
     render(<CityOffers city={mockCity} offers={[mockOffer]}>{mockchild}</CityOffers>);
 

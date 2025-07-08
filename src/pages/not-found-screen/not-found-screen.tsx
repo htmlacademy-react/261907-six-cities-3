@@ -1,11 +1,12 @@
 import {Helmet} from 'react-helmet-async';
 import {Link} from 'react-router-dom';
+import {datatype} from 'faker';
 import {AppRoute, CITIES} from '../../const';
 import Header from '../../component/header/header';
 import LinkToCity from '../../component/link-to-city/link-to-city';
 
 function NotFoundScreen(): JSX.Element {
-  const city = CITIES[3];
+  const city = CITIES[datatype.number(CITIES.length - 1)];
 
   return (
     <div className='page  page--gray  page--login'>
@@ -16,7 +17,7 @@ function NotFoundScreen(): JSX.Element {
       <main className='page__main  page__main--login'>
         <div className='page__login-container  container'>
           <section className='login'>
-            <h1 className='login__title'>The Page Isn’t Found</h1>
+            <h1 className='login__title'>404: The Page Isn’t Found</h1>
             <p data-testid='main-page-suggest'>
               Please, go to the&nbsp;
               <Link to={AppRoute.Main}>main page</Link>

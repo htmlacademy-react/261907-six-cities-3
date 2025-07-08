@@ -1,11 +1,25 @@
+import {useNavigate} from 'react-router-dom';
 import {Helmet} from 'react-helmet-async';
-import {CITIES} from '../../const';
+import {datatype} from 'faker';
+import {AppRoute, AuthorizationStatus, CITIES} from '../../const';
+import {useAppSelector} from '../../hooks';
+import {getAuthorizationStatus} from '../../store/user-process/user-process.selectors';
 import Header from '../../component/header/header';
 import LoginForm from '../../component/login-form/login-form';
 import LinkToCity from '../../component/link-to-city/link-to-city';
+import { useEffect } from 'react';
 
 function LoginScreen() {
-  const city: string = CITIES[3];
+  const navigate = useNavigate();
+  const isAuthorized = useAppSelector(getAuthorizationStatus);
+
+  useEffect(() => {
+    if (isAuthorized === AuthorizationStatus.Auth) {
+      navigate(AppRoute.Main);
+    }
+  });
+
+  const city = CITIES[datatype.number(CITIES.length - 1)];
 
   return (
     <div className='page  page--gray  page--login'>

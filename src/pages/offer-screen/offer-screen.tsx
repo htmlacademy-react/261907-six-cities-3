@@ -2,8 +2,10 @@ import {useEffect} from 'react';
 import {useParams} from 'react-router-dom';
 import {Helmet} from 'react-helmet-async';
 import cn from 'classnames';
-import {AuthorizationStatus, BookMarkButtonClass, CardClass, MapClass} from '../../const';
+import {AuthorizationStatus, BookMarkButtonClass, CardClass, MapClass, MAX_IMAGES_TO_RENDER_IN_OFFER, MAX_NEAR_PLACES_TO_RENDER} from '../../const';
+import {Offer, OfferLocationInfo} from '../../types/offer';
 import {capitalize} from '../../utils/utils';
+import {extractInfoForMap, prepareReviewsForRendering} from '../../utils/offers';
 import {useAppDispatch, useAppSelector} from '../../hooks';
 import {getNearPlaces, getNearPlacesLoadingStatus, getOfferErrorStatus, getReviews, getReviewsLoadingStatus, getStandaloneOffer, getStandaloneOfferLoadingStatus} from '../../store/app-data/app-data.selectors';
 import {getAuthorizationStatus} from '../../store/user-process/user-process.selectors';
@@ -57,6 +59,17 @@ function OfferScreen(): JSX.Element {
     return <LoadingScreen />;
   }
 
+  const imagesToRender = requestedOffer.images.slice(0, MAX_IMAGES_TO_RENDER_IN_OFFER);
+
+  const reviewsToRender = prepareReviewsForRendering(reviews);
+
+  const nearPlacesToRender = nearPlaces.slice(0, MAX_NEAR_PLACES_TO_RENDER);
+
+  const offerLocationsForMap: OfferLocationInfo[] = [
+    ...nearPlacesToRender.map((offer: Offer) => extractInfoForMap(offer)),
+    extractInfoForMap(requestedOffer)
+  ];
+
   return (
     <div className='page'>
       <Helmet>
@@ -67,7 +80,7 @@ function OfferScreen(): JSX.Element {
         <section className='offer'>
           <div className='offer__gallery-container  container'>
             <div className='offer__gallery'>
-              {requestedOffer.images.map((image) => (
+              {imagesToRender.map((image) => (
                 <div key={image} className='offer__image-wrapper'>
                   <img className='offer__image' src={image} alt='Photo studio' />
                 </div>
@@ -83,7 +96,7 @@ function OfferScreen(): JSX.Element {
               </div>
               <div className='offer__rating  rating'>
                 <div className='offer__stars  rating__stars'>
-                  <span style={{width: `${requestedOffer.rating * 20}%`}} />
+                  <span style={{width: `${Math.round(requestedOffer.rating) * 20}%`}} />
                   <span className='visually-hidden'>Rating</span>
                 </div>
                 <span className='offer__rating-value  rating__value'>{requestedOffer.rating}</span>
@@ -131,7 +144,7 @@ function OfferScreen(): JSX.Element {
                 {(isAuthorized || Boolean(reviews.length)) && (
                   <h2 className='reviews__title'>
                     Reviews
-                    {Boolean(reviews.length) && (
+                    {Boolean(reviewsToRender.length) && (
                       <>
                         &nbsp;&middot;&nbsp;
                         <span className='reviews__amount'>{reviews.length}</span>
@@ -139,17 +152,17 @@ function OfferScreen(): JSX.Element {
                     )}
                   </h2>
                 )}
-                <ReviewsList reviews={reviews} />
+                <ReviewsList reviews={reviewsToRender} />
                 {isAuthorized && <CommentForm />}
               </section>
             </div>
           </div>
-          <Map className={MapClass.Offer} offers={nearPlaces} />
+          <Map className={MapClass.Offer} offers={offerLocationsForMap} enteredOffer={requestedOffer.id}/>
         </section>
         <div className='container'>
           <section className='near-places  places'>
             <h2 className='near-places__title'>Other places in the neighbourhood</h2>
-            <OffersList className={CardClass.NearPlaces} offers={nearPlaces} />
+            <OffersList className={CardClass.NearPlaces} offers={nearPlacesToRender} />
           </section>
         </div>
       </main>

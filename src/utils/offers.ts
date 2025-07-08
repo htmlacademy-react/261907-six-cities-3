@@ -1,5 +1,6 @@
-import {Sorting} from '../const';
-import {Offer, LocationWithOffers} from '../types/offer';
+import {MAX_REVIEWS_TO_RENDER, Sorting} from '../const';
+import {Offer, LocationWithOffers, OfferLocationInfo, StandaloneOffer, FavoriteOffer} from '../types/offer';
+import {Review} from '../types/review';
 
 function checkFavorites(offers: Offer[], favorites: Offer[]): Offer[] {
   const favoritesIds = favorites.map((offer: Offer) => offer.id);
@@ -9,6 +10,31 @@ function checkFavorites(offers: Offer[], favorites: Offer[]): Offer[] {
 
 function clearFavorites(offers: Offer[]): Offer[] {
   return offers.map((offer: Offer) => ({...offer, isFavorite: false}));
+}
+
+function extractInfoForMap(offer: Offer | StandaloneOffer): OfferLocationInfo {
+  return {
+    id: offer.id,
+    city: offer.city,
+    location: offer.location
+  };
+}
+
+function extractOfferFromFavorite(favorite: FavoriteOffer): Offer {
+  const offer = {
+    id: favorite.id,
+    title: favorite.title,
+    type: favorite.type,
+    price: favorite.price,
+    city: favorite.city,
+    location: favorite.location,
+    isFavorite: favorite.isFavorite,
+    isPremium: favorite.isPremium,
+    rating: favorite.rating,
+    previewImage: favorite.previewImage
+  };
+
+  return offer;
 }
 
 function findFavorites(offers: Offer[]): Offer[] {
@@ -23,6 +49,15 @@ function findOffersAndChangeFavoriteStatus(offers: Offer[], {id, isFavorite}: Of
   }
 
   return offers;
+}
+
+function prepareReviewsForRendering(reviews: Review[]) {
+  return [...reviews].sort((reviewA: Review, reviewB: Review) => {
+    const dateA: Date = new Date(reviewA.date);
+    const dateB: Date = new Date(reviewB.date);
+
+    return dateB.getTime() - dateA.getTime();
+  }).slice(0, MAX_REVIEWS_TO_RENDER);
 }
 
 function sortOffersByLocation(offers: Offer[]): LocationWithOffers[] {
@@ -56,6 +91,13 @@ function sortRating(offerA: Offer, offerB: Offer): number {
   return offerB.rating - offerA.rating;
 }
 
+function updateFavorites(favorites: Offer[], offerToUpdate: FavoriteOffer): Offer[] {
+  const offer = extractOfferFromFavorite(offerToUpdate);
+  const isInFavorites = favorites.some((favorite) => favorite.id === offer.id);
+
+  return isInFavorites ? favorites.filter((favorite) => favorite.id !== offer.id) : [...favorites, offer];
+}
+
 function updateOffersToRender(offers: Offer[], city: string, sorting: Sorting): Offer[] {
   const requiredOffers = offers.filter((offer: Offer) => offer.city.name === city);
 
@@ -74,8 +116,12 @@ function updateOffersToRender(offers: Offer[], city: string, sorting: Sorting): 
 export {
   checkFavorites,
   clearFavorites,
+  extractInfoForMap,
+  extractOfferFromFavorite,
   findFavorites,
   findOffersAndChangeFavoriteStatus,
+  prepareReviewsForRendering,
   sortOffersByLocation,
+  updateFavorites,
   updateOffersToRender
 };

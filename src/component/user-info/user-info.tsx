@@ -1,19 +1,18 @@
 import {PointerEvent} from 'react';
 import {Link} from 'react-router-dom';
 import {AppRoute, AuthorizationStatus} from '../../const';
-import {findFavorites} from '../../utils/offers';
 import {useAppDispatch, useAppSelector} from '../../hooks';
 import {logoutAction} from '../../store/api-action';
 import {getAuthorizationStatus, getUser, getUserProcessing} from '../../store/user-process/user-process.selectors';
-import {getOffers} from '../../store/app-data/app-data.selectors';
+import {getFavorites} from '../../store/app-data/app-data.selectors';
 
 function UserInfo(): JSX.Element {
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
   const user = useAppSelector(getUser);
-  const offers = useAppSelector(getOffers);
+  const favoriteOffers = useAppSelector(getFavorites);
   const isUserProcessing = useAppSelector(getUserProcessing);
   const isAuthorized = authorizationStatus === AuthorizationStatus.Auth;
-  const favoritesCount = findFavorites(offers).length;
+  const favoritesCount = favoriteOffers.length;
   const dispatch = useAppDispatch();
 
   const handleSignOut = (evt: PointerEvent<HTMLAnchorElement>) => {
@@ -36,7 +35,7 @@ function UserInfo(): JSX.Element {
               ? (
                 <>
                   <span className='header__user-name  user__name'>{user?.email}</span>
-                  {Boolean(favoritesCount) && <span className='header__favorite-count'>{favoritesCount}</span>}
+                  <span className='header__favorite-count'>{favoritesCount}</span>
                 </>
               )
               : <span className='header__login'>Sign in</span>}

@@ -2,10 +2,13 @@ import {createSlice} from '@reduxjs/toolkit';
 import {NameSpace} from '../../const';
 import {InitialState} from '../../types/state';
 import {changeFavoriteStatusAction, getFavoritesAction, getOffersAction, logoutAction, requestNearPlacesAction, requestReviewsForOfferAction, requestStandaloneOfferAction, sendCommentAction} from '../api-action';
-import {checkFavorites, clearFavorites, findOffersAndChangeFavoriteStatus} from '../../utils/offers';
+import {checkFavorites, clearFavorites, findOffersAndChangeFavoriteStatus, updateFavorites} from '../../utils/offers';
 
-const initialState: Pick<InitialState, 'isCommentProcessing' | 'isFavoriteProcessing' | 'isNearPlacesLoading' | 'isOffersLoading' | 'isOfferNotFound' | 'isReviewsLoading' | 'isStandaloneOfferLoading' | 'nearPlaces' |'offers' | 'requestedOffer' |'reviews'> = {
+const initialState: Pick<InitialState, 'favorites' | 'isCommentDelivered' | 'isCommentProcessing' | 'isFavoritesLoading' | 'isFavoriteProcessing' | 'isNearPlacesLoading' | 'isOffersLoading' | 'isOfferNotFound' | 'isReviewsLoading' | 'isStandaloneOfferLoading' | 'nearPlaces' |'offers' | 'requestedOffer' |'reviews'> = {
+  favorites: [],
+  isCommentDelivered: false,
   isCommentProcessing: false,
+  isFavoritesLoading: false,
   isFavoriteProcessing: false,
   isNearPlacesLoading: false,
   isOffersLoading: false,
@@ -29,6 +32,7 @@ const appData = createSlice({
       })
       .addCase(changeFavoriteStatusAction.fulfilled, (state, action) => {
         state.isFavoriteProcessing = false;
+        state.favorites = updateFavorites(state.favorites, action.payload);
         state.offers = findOffersAndChangeFavoriteStatus(state.offers, action.payload);
 
         if (state.requestedOffer && state.requestedOffer.id === action.payload.id) {
@@ -40,8 +44,17 @@ const appData = createSlice({
       .addCase(changeFavoriteStatusAction.rejected, (state) => {
         state.isFavoriteProcessing = false;
       })
+      .addCase(getFavoritesAction.pending, (state) => {
+        state.isFavoritesLoading = true;
+        state.favorites = [];
+      })
       .addCase(getFavoritesAction.fulfilled, (state, action) => {
-        state.offers = checkFavorites(state.offers, action.payload);
+        state.isFavoritesLoading = false;
+        state.favorites = action.payload;
+        state.offers = checkFavorites(state.offers, state.favorites);
+      })
+      .addCase(getFavoritesAction.rejected, (state) => {
+        state.isFavoritesLoading = false;
       })
       .addCase(getOffersAction.pending, (state) => {
         state.isOffersLoading = true;
@@ -102,10 +115,12 @@ const appData = createSlice({
       })
       .addCase(sendCommentAction.pending, (state) => {
         state.isCommentProcessing = true;
+        state.isCommentDelivered = false;
       })
       .addCase(sendCommentAction.fulfilled, (state, action) => {
         state.isCommentProcessing = false;
-        state.reviews = [...state.reviews, action.payload];
+        state.isCommentDelivered = true;
+        state.reviews = [action.payload, ...state.reviews];
       })
       .addCase(sendCommentAction.rejected, (state) => {
         state.isCommentProcessing = false;

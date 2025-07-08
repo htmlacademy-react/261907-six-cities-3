@@ -21,6 +21,9 @@ export type InitialState = {
   isFavoriteProcessing: boolean;
   isCommentProcessing: boolean;
   isUserProcessing: boolean;
+  favorites: Offer[];
+  isFavoritesLoading: boolean;
+  isCommentDelivered: boolean;
 };
 
 export type State = ReturnType<typeof store.getState>;
